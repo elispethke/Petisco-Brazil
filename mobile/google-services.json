@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "899785039409",
+    "project_id": "petisco-brazil",
+    "storage_bucket": "petisco-brazil.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899785039409:android:46fee55606e07d7fde7f10",
+        "android_client_info": {
+          "package_name": "com.pethke.petiscobrazil"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUZ6VDQrvs4ZQstccfI7SObZF3apQE-YY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

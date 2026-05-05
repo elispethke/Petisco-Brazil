@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "Petisco Brazil",
+    "slug": "petisco-brazil",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/fotoBg.jpg",
+      "resizeMode": "cover",
+      "backgroundColor": "#003322"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.petiscobrazil.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#003322"
+      },
+      "package": "com.petiscobrazil.app"
+    },
+    "web": {
+      "favicon": "./assets/icon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#003322",
+          "image": "./assets/fotoBg.jpg",
+          "imageWidth": 200
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "scheme": "petisco"
+  }
+}
