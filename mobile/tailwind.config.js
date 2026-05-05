@@ -24,6 +24,9 @@ module.exports = {
         'sans-medium': ['Inter_500Medium'],
         'sans-bold': ['Inter_700Bold'],
       },
+      backgroundColor: {
+     'glass': 'rgba(0, 51, 34, 0.8)',
+    },
     },
   },
   plugins: [],

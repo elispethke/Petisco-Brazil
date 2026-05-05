@@ -8,31 +8,14 @@ interface AuthCardProps {
 
 export function AuthCard({ title, children }: AuthCardProps) {
   return (
-    <View style={styles.card}>
-      <Text style={styles.title}>{title}</Text>
+    <View className="w-full rounded-[28px] border border-brand-gold/20 bg-brand-green/50 p-7 shadow-2xl">
+      <Text className="md-1 text-[22px] text-white font-serif">
+        {title}
+      </Text>
+      <View className="gap-3">
       {children}
+      </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: 'rgba(0,30,20,0.72)',
-    borderRadius: 28,
-    padding: 28,
-    borderWidth: 1,
-    borderColor: 'rgba(197,160,89,0.18)',
-    gap: 14,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 24 },
-    shadowOpacity: 0.45,
-    shadowRadius: 48,
-    elevation: 20,
-  },
-  title: {
-    color: '#FFFFFF',
-    fontSize: 22,
-    fontFamily: 'PlayfairDisplay_700Bold',
-    marginBottom: 4,
-  },
-});

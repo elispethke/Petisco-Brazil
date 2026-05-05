@@ -1,0 +1,8 @@
+{
+  "android": {
+    "package": "com.elispethke.petiscobrazilapp"
+  },
+  "ios": {
+    "bundleIdentifier": "com.elispethke.petiscobrazilapp"
+  }
+}
