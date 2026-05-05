@@ -16,6 +16,17 @@ const de = {
       categories: 'Kategorien',
       viewAll: 'Alle anzeigen',
     },
+    catalog: {
+      eyebrow: 'Menü',
+      empty: 'Keine Produkte in dieser Kategorie',
+      count: {
+        all:     'Produkte',
+        salgado: 'herzhafte',
+        combo:   'Combos',
+        doce:    'Süßes',
+        bolo:    'Kuchen',
+      },
+    },
     categories: {
       all: 'Alle',
       salgado: 'Herzhaft',

@@ -16,6 +16,17 @@ const en = {
       categories: "Categories",
       viewAll: "View all",
     },
+    catalog: {
+      eyebrow: "Menu",
+      empty: "No products in this category",
+      count: {
+        all:     "products",
+        salgado: "savory",
+        combo:   "combos",
+        doce:    "sweets",
+        bolo:    "cakes",
+      },
+    },
     categories: {
       all: "All",
       salgado: "Savory",

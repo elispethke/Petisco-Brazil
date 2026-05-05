@@ -16,6 +16,17 @@ const pt = {
       categories: 'Categorias',
       viewAll: 'Ver todos',
     },
+    catalog: {
+      eyebrow: 'Cardápio',
+      empty: 'Nenhum produto nesta categoria',
+      count: {
+        all:     'produtos',
+        salgado: 'salgados',
+        combo:   'combos',
+        doce:    'doces',
+        bolo:    'bolos',
+      },
+    },
     categories: {
       all: 'Todos',
       salgado: 'Salgados',
