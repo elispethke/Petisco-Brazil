@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  Pressable,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { router } from 'expo-router';
@@ -51,56 +44,65 @@ export default function CheckoutScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <View style={styles.header}>
-        <Text style={styles.title}>{t('checkout.title')}</Text>
-        <Pressable onPress={() => router.back()} style={styles.closeBtn}>
+    <SafeAreaView className="flex-1 bg-brand-green" edges={['top', 'bottom']}>
+      <View className="flex-row items-center justify-between px-5 py-4 border-b border-brand-gold/[.15]">
+        <Text className="text-white text-xl font-serif">{t('checkout.title')}</Text>
+        <Pressable
+          onPress={() => router.back()}
+          className="w-9 h-9 rounded-full bg-brand-gold/10 items-center justify-center"
+        >
           <X size={20} color={colors.brand.gold} />
         </Pressable>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Order Summary */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>{t('checkout.orderSummary')}</Text>
+        <View className="m-4 mb-0 bg-brand-green-light rounded-2xl p-4 border border-brand-gold/[.15] gap-[10px]">
+          <Text className="text-white text-[15px] font-sans-bold">{t('checkout.orderSummary')}</Text>
           {items.map((item, index) => (
-            <View key={`${item.product.id}-${index}`} style={styles.orderRow}>
-              <Text style={styles.orderName} numberOfLines={1}>
+            <View key={`${item.product.id}-${index}`} className="flex-row items-center gap-2">
+              <Text className="flex-1 text-white/80 text-sm font-sans" numberOfLines={1}>
                 {item.product.name[lang] ?? item.product.name.pt}
               </Text>
-              <Text style={styles.orderQty}>{item.qty}un</Text>
-              <Text style={styles.orderPrice}>{formatEuro(item.totalPrice)}</Text>
+              <Text className="text-brand-gold text-[13px] font-sans-medium">{item.qty}un</Text>
+              <Text className="text-white text-sm font-sans-bold min-w-[64px] text-right">
+                {formatEuro(item.totalPrice)}
+              </Text>
             </View>
           ))}
-          <View style={styles.divider} />
-          <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>{t('cart.total')}</Text>
-            <Text style={styles.totalValue}>{formatEuro(totalPrice)}</Text>
+          <View className="h-px bg-brand-gold/20" />
+          <View className="flex-row justify-between items-center">
+            <Text className="text-white/70 text-[15px] font-sans">{t('cart.total')}</Text>
+            <Text className="text-white text-xl font-serif">{formatEuro(totalPrice)}</Text>
           </View>
         </View>
 
         {/* Date */}
-        <View style={styles.card}>
-          <View style={styles.cardTitleRow}>
+        <View className="m-4 mb-0 bg-brand-green-light rounded-2xl p-4 border border-brand-gold/[.15] gap-[10px]">
+          <View className="flex-row items-center gap-2">
             <Calendar size={18} color={colors.brand.gold} />
-            <Text style={styles.cardTitle}>{t('checkout.selectDate')}</Text>
+            <Text className="text-white text-[15px] font-sans-bold">{t('checkout.selectDate')}</Text>
           </View>
-          <Text style={styles.infoText}>{t('checkout.deliveryInfo')}</Text>
+          <Text className="text-white/50 text-xs font-sans">{t('checkout.deliveryInfo')}</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.dateRow}
+            contentContainerStyle={{ gap: 8, paddingVertical: 4 }}
           >
             {availableDates.map((date) => {
-              const val = date.toISOString().split('T')[0];
+              const val        = date.toISOString().split('T')[0];
               const isSelected = val === selectedDate;
               return (
                 <Pressable
                   key={val}
                   onPress={() => setSelectedDate(val)}
-                  style={[styles.dateChip, isSelected && styles.chipActive]}
+                  className={`px-[14px] py-2 rounded-[20px] border ${
+                    isSelected
+                      ? 'bg-brand-gold border-brand-gold'
+                      : 'border-brand-gold/30'
+                  }`}
                 >
-                  <Text style={[styles.dateText, isSelected && styles.chipActiveText]}>
+                  <Text className={`text-xs font-sans ${isSelected ? 'text-brand-green font-sans-bold' : 'text-white/70'}`}>
                     {formatDisplayDate(date)}
                   </Text>
                 </Pressable>
@@ -110,21 +112,25 @@ export default function CheckoutScreen() {
         </View>
 
         {/* Time */}
-        <View style={styles.card}>
-          <View style={styles.cardTitleRow}>
+        <View className="m-4 mb-0 bg-brand-green-light rounded-2xl p-4 border border-brand-gold/[.15] gap-[10px]">
+          <View className="flex-row items-center gap-2">
             <Clock size={18} color={colors.brand.gold} />
-            <Text style={styles.cardTitle}>{t('checkout.selectTime')}</Text>
+            <Text className="text-white text-[15px] font-sans-bold">{t('checkout.selectTime')}</Text>
           </View>
-          <View style={styles.timeGrid}>
+          <View className="flex-row flex-wrap gap-2">
             {timeSlots.map((slot) => {
               const isSelected = slot.value === selectedTime;
               return (
                 <Pressable
                   key={slot.value}
                   onPress={() => setSelectedTime(slot.value)}
-                  style={[styles.timeChip, isSelected && styles.timeChipActive]}
+                  className={`px-[14px] py-[10px] rounded-xl border min-w-[45%] items-center ${
+                    isSelected
+                      ? 'bg-brand-terracotta border-brand-terracotta'
+                      : 'border-brand-gold/30'
+                  }`}
                 >
-                  <Text style={[styles.timeText, isSelected && styles.chipActiveText]}>
+                  <Text className={`text-[13px] font-sans ${isSelected ? 'text-white font-sans-bold' : 'text-white/70'}`}>
                     {slot.label}
                   </Text>
                 </Pressable>
@@ -133,16 +139,16 @@ export default function CheckoutScreen() {
           </View>
         </View>
 
-        <View style={{ height: 120 }} />
+        <View className="h-[120px]" />
       </ScrollView>
 
-      <View style={styles.footer}>
+      <View className="absolute bottom-0 left-0 right-0 p-5 pb-9 bg-brand-green border-t border-brand-gold/[.15]">
         <Pressable
           onPress={handleConfirm}
-          style={[styles.confirmBtn, loading && styles.btnDisabled]}
           disabled={loading}
+          className={`bg-brand-terracotta rounded-2xl py-4 items-center ${loading ? 'opacity-60' : 'active:opacity-80'}`}
         >
-          <Text style={styles.confirmBtnText}>
+          <Text className="text-white text-[17px] font-sans-bold">
             {loading ? 'Processando...' : t('checkout.confirm')}
           </Text>
         </Pressable>
@@ -150,129 +156,3 @@ export default function CheckoutScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.brand.green },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(197,160,89,0.15)',
-  },
-  title: { color: '#FFF', fontSize: 20, fontFamily: 'PlayfairDisplay_700Bold' },
-  closeBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: 'rgba(197,160,89,0.1)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  card: {
-    margin: 16,
-    marginBottom: 0,
-    backgroundColor: colors.brand.greenLight,
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(197,160,89,0.15)',
-    gap: 10,
-  },
-  cardTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  cardTitle: { color: '#FFF', fontSize: 15, fontFamily: 'Inter_700Bold' },
-  infoText: {
-    color: 'rgba(255,255,255,0.5)',
-    fontSize: 12,
-    fontFamily: 'Inter_400Regular',
-  },
-  orderRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  orderName: {
-    flex: 1,
-    color: 'rgba(255,255,255,0.8)',
-    fontSize: 14,
-    fontFamily: 'Inter_400Regular',
-  },
-  orderQty: {
-    color: colors.brand.gold,
-    fontSize: 13,
-    fontFamily: 'Inter_500Medium',
-  },
-  orderPrice: {
-    color: '#FFF',
-    fontSize: 14,
-    fontFamily: 'Inter_700Bold',
-    minWidth: 64,
-    textAlign: 'right',
-  },
-  divider: { height: 1, backgroundColor: 'rgba(197,160,89,0.2)' },
-  totalRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  totalLabel: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: 15,
-    fontFamily: 'Inter_400Regular',
-  },
-  totalValue: { color: '#FFF', fontSize: 20, fontFamily: 'PlayfairDisplay_700Bold' },
-  dateRow: { gap: 8, paddingVertical: 4 },
-  dateChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(197,160,89,0.3)',
-  },
-  chipActive: {
-    backgroundColor: colors.brand.gold,
-    borderColor: colors.brand.gold,
-  },
-  dateText: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: 12,
-    fontFamily: 'Inter_400Regular',
-  },
-  chipActiveText: { color: colors.brand.green, fontFamily: 'Inter_700Bold' },
-  timeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  timeChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(197,160,89,0.3)',
-    minWidth: '45%',
-    alignItems: 'center',
-  },
-  timeChipActive: {
-    backgroundColor: colors.brand.terracotta,
-    borderColor: colors.brand.terracotta,
-  },
-  timeText: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: 13,
-    fontFamily: 'Inter_400Regular',
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 20,
-    paddingBottom: 36,
-    backgroundColor: colors.brand.green,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(197,160,89,0.15)',
-  },
-  confirmBtn: {
-    backgroundColor: colors.brand.terracotta,
-    borderRadius: 16,
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-  btnDisabled: { opacity: 0.6 },
-  confirmBtnText: { color: '#FFF', fontSize: 17, fontFamily: 'Inter_700Bold' },
-});

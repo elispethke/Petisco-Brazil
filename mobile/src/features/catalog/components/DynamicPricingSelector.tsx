@@ -6,7 +6,6 @@ import {
   Image,
   Pressable,
   ScrollView,
-  StyleSheet,
   Dimensions,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -17,17 +16,16 @@ import { useCartStore } from '@/shared/store/cartStore';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
+// LinearGradient does not support className — inline object required
+const ABS_FILL = { position: 'absolute' as const, top: 0, left: 0, right: 0, bottom: 0 };
+
 interface DynamicPricingSelectorProps {
   product: CatalogProduct | null;
   visible: boolean;
   onClose: () => void;
 }
 
-export function DynamicPricingSelector({
-  product,
-  visible,
-  onClose,
-}: DynamicPricingSelectorProps) {
+export function DynamicPricingSelector({ product, visible, onClose }: DynamicPricingSelectorProps) {
   const { t, i18n } = useTranslation();
   const addItem = useCartStore((s) => s.addItem);
 
@@ -59,61 +57,87 @@ export function DynamicPricingSelector({
       onRequestClose={onClose}
       statusBarTranslucent
     >
-      <View style={styles.overlay}>
-        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
+      <View className="flex-1 bg-black/[.65] justify-end">
+        <Pressable style={ABS_FILL} onPress={onClose} />
 
-        <View style={styles.sheet}>
+        <View
+          className="bg-white rounded-t-[32px] overflow-hidden"
+          style={{ maxHeight: SCREEN_HEIGHT * 0.88 }}
+        >
           {/* Drag handle */}
-          <View style={styles.handle} />
+          <View className="absolute top-[10px] self-center w-9 h-1 rounded-full bg-white/50 z-10" />
 
           {/* Hero image */}
-          <View style={styles.heroContainer}>
-            <Image
-              source={product.image}
-              style={StyleSheet.absoluteFill}
-              resizeMode="cover"
-            />
+          <View className="h-[220px] bg-[#C8B89A] overflow-hidden">
+            <Image source={product.image} style={ABS_FILL} resizeMode="cover" />
             <LinearGradient
               colors={['rgba(0,0,0,0.08)', 'rgba(0,0,0,0.72)']}
-              style={StyleSheet.absoluteFill}
+              style={ABS_FILL}
               start={{ x: 0, y: 0 }}
               end={{ x: 0, y: 1 }}
             />
-            <Pressable style={styles.closeBtn} onPress={onClose} hitSlop={12}>
-              <Text style={styles.closeBtnText}>✕</Text>
+            <Pressable
+              className="absolute top-[14px] right-4 w-[34px] h-[34px] rounded-full bg-black/40 items-center justify-center z-10"
+              onPress={onClose}
+              hitSlop={12}
+            >
+              <Text className="text-white text-sm font-sans-bold">✕</Text>
             </Pressable>
-            <View style={styles.heroInfo}>
-              <Text style={styles.heroName}>{name}</Text>
-              <Text style={styles.heroDesc} numberOfLines={2}>{description}</Text>
+            <View className="absolute bottom-[18px] left-5 right-[60px]">
+              <Text
+                className="text-white text-2xl font-serif tracking-[-0.3px]"
+                style={{
+                  textShadowColor: 'rgba(0,0,0,0.4)',
+                  textShadowOffset: { width: 0, height: 1 },
+                  textShadowRadius: 4,
+                }}
+              >
+                {name}
+              </Text>
+              <Text className="text-white/[.75] text-[13px] font-sans mt-1 leading-[18px]" numberOfLines={2}>
+                {description}
+              </Text>
             </View>
           </View>
 
           {/* Body */}
-          <View style={styles.body}>
+          <View className="pt-5 px-5">
             {isBolo ? (
-              <View style={styles.boloSection}>
-                <View style={styles.boloPriceRow}>
+              <View className="pb-2">
+                <View className="flex-row items-center justify-between mb-[10px]">
                   <View>
-                    <Text style={styles.boloLabel}>{t('product.unitPrice')}</Text>
-                    <Text style={styles.boloPrice}>{formatEuro(2500)}</Text>
+                    <Text className="text-gray-400 text-[11px] font-sans-medium uppercase tracking-[0.5px] mb-1">
+                      {t('product.unitPrice')}
+                    </Text>
+                    <Text className="text-brand-green text-[32px] font-serif tracking-[-0.5px]">
+                      {formatEuro(2500)}
+                    </Text>
                   </View>
-                  <View style={styles.boloBadge}>
-                    <Text style={styles.boloBadgeText}>{t('product.homeBaked')}</Text>
+                  <View className="bg-amber-100 rounded-[20px] px-3 py-1.5">
+                    <Text className="text-amber-800 text-xs font-sans-bold">
+                      {t('product.homeBaked')}
+                    </Text>
                   </View>
                 </View>
-                <Text style={styles.boloNote}>{t('product.boloNote')}</Text>
+                <Text className="text-gray-400 text-xs font-sans leading-[17px]">
+                  {t('product.boloNote')}
+                </Text>
               </View>
             ) : (
               <>
-                <View style={styles.sectionHeader}>
-                  <Text style={styles.sectionTitle}>{t('product.quantity')}</Text>
-                  <Text style={styles.sectionHint}>{t('product.minUnits')}</Text>
+                <View className="flex-row items-baseline justify-between mb-[14px]">
+                  <Text className="text-[#1A1A1A] text-base font-sans-bold">
+                    {t('product.quantity')}
+                  </Text>
+                  <Text className="text-gray-400 text-[11px] font-sans">
+                    {t('product.minUnits')}
+                  </Text>
                 </View>
 
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.tiersRow}
+                  contentContainerStyle={{ paddingRight: 20, gap: 10, paddingBottom: 4 }}
                 >
                   {tiers.map((tier) => {
                     const isSelected = selectedTier?.qty === tier.qty;
@@ -122,21 +146,29 @@ export function DynamicPricingSelector({
                       <Pressable
                         key={tier.qty}
                         onPress={() => setSelectedTier(tier)}
-                        style={[styles.tierCard, isSelected && styles.tierCardSelected]}
+                        className={`w-[108px] rounded-2xl p-[14px] border-2 gap-[3px] ${
+                          isSelected
+                            ? 'bg-brand-green border-brand-green shadow-md'
+                            : 'bg-[#F8F6F1] border-transparent'
+                        }`}
                       >
                         {tier.bestValue && (
-                          <View style={styles.bestBadge}>
-                            <Text style={styles.bestBadgeText}>{t('product.bestValue')}</Text>
+                          <View className="bg-brand-gold rounded-lg px-1.5 py-[3px] self-start mb-1.5">
+                            <Text className="text-brand-green text-[9px] font-sans-bold">
+                              {t('product.bestValue')}
+                            </Text>
                           </View>
                         )}
-                        <Text style={[styles.tierQty, isSelected && styles.tierQtySelected]}>
+                        <Text className={`text-[22px] font-serif tracking-[-0.5px] ${isSelected ? 'text-white' : 'text-[#1A1A1A]'}`}>
                           {tier.qty}
-                          <Text style={styles.tierQtyUnit}> {t('product.unitAbbr')}</Text>
+                          <Text className={`text-[13px] font-sans ${isSelected ? 'text-white' : 'text-[#1A1A1A]'}`}>
+                            {' '}{t('product.unitAbbr')}
+                          </Text>
                         </Text>
-                        <Text style={[styles.tierPrice, isSelected && styles.tierPriceSelected]}>
+                        <Text className={`text-[15px] font-sans-bold ${isSelected ? 'text-brand-gold' : 'text-brand-green'}`}>
                           {formatEuro(tier.price)}
                         </Text>
-                        <Text style={[styles.tierUnitPrice, isSelected && styles.tierUnitPriceSelected]}>
+                        <Text className={`text-[11px] font-sans ${isSelected ? 'text-white/50' : 'text-gray-400'}`}>
                           {formatEuro(unitCents)}/{t('product.unitAbbr')}
                         </Text>
                       </Pressable>
@@ -148,22 +180,29 @@ export function DynamicPricingSelector({
           </View>
 
           {/* Footer CTA */}
-          <View style={styles.footer}>
+          <View className="px-5 pt-4 pb-9 border-t border-gray-100 mt-5 gap-3">
             {!isBolo && selectedTier && (
-              <View style={styles.summary}>
-                <Text style={styles.summaryLabel}>
+              <View className="flex-row items-center justify-between">
+                <Text className="text-gray-500 text-[13px] font-sans">
                   {t('product.unitsSelected', { count: selectedTier.qty })}
                 </Text>
-                <Text style={styles.summaryPrice}>
+                <Text className="text-brand-green text-[22px] font-serif tracking-[-0.3px]">
                   {formatEuro(selectedTier.price)}
                 </Text>
               </View>
             )}
-            <Pressable style={styles.ctaBtn} onPress={handleAdd}>
-              <Text style={styles.ctaText}>{t('product.addToCartFull')}</Text>
+            <Pressable
+              className="bg-brand-terracotta rounded-2xl py-[17px] px-5 flex-row items-center justify-center gap-3 shadow-lg active:opacity-80"
+              onPress={handleAdd}
+            >
+              <Text className="text-white text-base font-sans-bold tracking-[0.2px]">
+                {t('product.addToCartFull')}
+              </Text>
               {!isBolo && selectedTier && (
-                <View style={styles.ctaPriceBadge}>
-                  <Text style={styles.ctaPriceText}>{formatEuro(selectedTier.price)}</Text>
+                <View className="bg-white/[.18] rounded-lg px-[10px] py-1">
+                  <Text className="text-white text-sm font-sans-bold">
+                    {formatEuro(selectedTier.price)}
+                  </Text>
                 </View>
               )}
             </Pressable>
@@ -173,243 +212,3 @@ export function DynamicPricingSelector({
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.65)',
-    justifyContent: 'flex-end',
-  },
-  sheet: {
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
-    overflow: 'hidden',
-    maxHeight: SCREEN_HEIGHT * 0.88,
-  },
-  handle: {
-    position: 'absolute',
-    top: 10,
-    alignSelf: 'center',
-    width: 36,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: 'rgba(255,255,255,0.5)',
-    zIndex: 10,
-  },
-  heroContainer: {
-    height: 220,
-    backgroundColor: '#C8B89A',
-    overflow: 'hidden',
-  },
-  closeBtn: {
-    position: 'absolute',
-    top: 14,
-    right: 16,
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 10,
-  },
-  closeBtnText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontFamily: 'Inter_700Bold',
-  },
-  heroInfo: {
-    position: 'absolute',
-    bottom: 18,
-    left: 20,
-    right: 60,
-  },
-  heroName: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontFamily: 'PlayfairDisplay_700Bold',
-    letterSpacing: -0.3,
-    textShadowColor: 'rgba(0,0,0,0.4)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 4,
-  },
-  heroDesc: {
-    color: 'rgba(255,255,255,0.75)',
-    fontSize: 13,
-    fontFamily: 'Inter_400Regular',
-    marginTop: 4,
-    lineHeight: 18,
-  },
-  body: {
-    paddingTop: 20,
-    paddingHorizontal: 20,
-  },
-  boloSection:  { paddingBottom: 8 },
-  boloPriceRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  boloLabel: {
-    color: '#9CA3AF',
-    fontSize: 11,
-    fontFamily: 'Inter_500Medium',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 4,
-  },
-  boloPrice: {
-    color: '#003322',
-    fontSize: 32,
-    fontFamily: 'PlayfairDisplay_700Bold',
-    letterSpacing: -0.5,
-  },
-  boloBadge: {
-    backgroundColor: '#FEF3C7',
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  boloBadgeText: {
-    color: '#92400E',
-    fontSize: 12,
-    fontFamily: 'Inter_700Bold',
-  },
-  boloNote: {
-    color: '#9CA3AF',
-    fontSize: 12,
-    fontFamily: 'Inter_400Regular',
-    lineHeight: 17,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    justifyContent: 'space-between',
-    marginBottom: 14,
-  },
-  sectionTitle: {
-    color: '#1A1A1A',
-    fontSize: 16,
-    fontFamily: 'Inter_700Bold',
-  },
-  sectionHint: {
-    color: '#9CA3AF',
-    fontSize: 11,
-    fontFamily: 'Inter_400Regular',
-  },
-  tiersRow: {
-    paddingRight: 20,
-    gap: 10,
-    paddingBottom: 4,
-  },
-  tierCard: {
-    width: 108,
-    backgroundColor: '#F8F6F1',
-    borderRadius: 16,
-    padding: 14,
-    borderWidth: 2,
-    borderColor: 'transparent',
-    gap: 3,
-  },
-  tierCardSelected: {
-    backgroundColor: '#003322',
-    borderColor: '#003322',
-    shadowColor: '#003322',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  bestBadge: {
-    backgroundColor: '#C5A059',
-    borderRadius: 8,
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    alignSelf: 'flex-start',
-    marginBottom: 6,
-  },
-  bestBadgeText: {
-    color: '#003322',
-    fontSize: 9,
-    fontFamily: 'Inter_700Bold',
-  },
-  tierQty: {
-    color: '#1A1A1A',
-    fontSize: 22,
-    fontFamily: 'PlayfairDisplay_700Bold',
-    letterSpacing: -0.5,
-  },
-  tierQtyUnit:          { fontSize: 13, fontFamily: 'Inter_400Regular' },
-  tierQtySelected:      { color: '#FFFFFF' },
-  tierPrice: {
-    color: '#003322',
-    fontSize: 15,
-    fontFamily: 'Inter_700Bold',
-  },
-  tierPriceSelected:    { color: '#C5A059' },
-  tierUnitPrice: {
-    color: '#9CA3AF',
-    fontSize: 11,
-    fontFamily: 'Inter_400Regular',
-  },
-  tierUnitPriceSelected: { color: 'rgba(255,255,255,0.5)' },
-  footer: {
-    paddingHorizontal: 20,
-    paddingTop: 16,
-    paddingBottom: 36,
-    borderTopWidth: 1,
-    borderTopColor: '#F3F4F6',
-    marginTop: 20,
-    gap: 12,
-  },
-  summary: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  summaryLabel: {
-    color: '#6B7280',
-    fontSize: 13,
-    fontFamily: 'Inter_400Regular',
-  },
-  summaryPrice: {
-    color: '#003322',
-    fontSize: 22,
-    fontFamily: 'PlayfairDisplay_700Bold',
-    letterSpacing: -0.3,
-  },
-  ctaBtn: {
-    backgroundColor: '#B35C37',
-    borderRadius: 16,
-    paddingVertical: 17,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 12,
-    shadowColor: '#B35C37',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.35,
-    shadowRadius: 14,
-    elevation: 6,
-  },
-  ctaText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontFamily: 'Inter_700Bold',
-    letterSpacing: 0.2,
-  },
-  ctaPriceBadge: {
-    backgroundColor: 'rgba(255,255,255,0.18)',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-  },
-  ctaPriceText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontFamily: 'Inter_700Bold',
-  },
-});

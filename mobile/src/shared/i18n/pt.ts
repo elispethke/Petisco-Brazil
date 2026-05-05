@@ -92,9 +92,6 @@ const pt = {
         password: 'Senha',
         button: 'Entrar',
         button_loading: 'Entrando...',
-        google: 'Continuar com Google',
-        google_loading: 'Conectando...',
-        or_divider: 'ou entre com e-mail',
         forgot_password: 'Esqueci minha senha',
         forgot_sending: 'Enviando...',
         forgot_success: 'E-mail de recuperação enviado! Verifique sua caixa de entrada.',
@@ -104,7 +101,6 @@ const pt = {
         error_invalid: 'E-mail ou senha incorretos.',
         error_forgot_email: 'Digite seu e-mail acima para recuperar a senha.',
         error_forgot_failed: 'Não foi possível enviar o e-mail. Verifique o endereço.',
-        error_google_not_configured: 'Login com Google ainda não está disponível.',
       },
       register: {
         title: 'Criar conta',

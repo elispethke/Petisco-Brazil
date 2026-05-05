@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Pressable, Text, StyleSheet } from 'react-native';
+import { ScrollView, Pressable, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ProductFilter } from '@/data/products';
 
@@ -23,8 +23,8 @@ export function CategoryFilter({ selected, onSelect }: CategoryFilterProps) {
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.row}
-      style={styles.scroll}
+      contentContainerStyle={{ paddingHorizontal: 16, gap: 8, alignItems: 'center' }}
+      className="py-1"
     >
       {FILTERS.map((f) => {
         const isActive = selected === f.key;
@@ -32,10 +32,18 @@ export function CategoryFilter({ selected, onSelect }: CategoryFilterProps) {
           <Pressable
             key={f.key}
             onPress={() => onSelect(f.key)}
-            style={[styles.pill, isActive && styles.pillActive]}
+            className={`flex-row items-center gap-1.5 px-4 py-[10px] rounded-full border ${
+              isActive
+                ? 'bg-brand-terracotta border-brand-terracotta shadow-md'
+                : 'bg-white/[.07] border-brand-gold/20'
+            }`}
           >
-            <Text style={styles.emoji}>{f.emoji}</Text>
-            <Text style={[styles.label, isActive && styles.labelActive]}>
+            <Text className="text-[15px]">{f.emoji}</Text>
+            <Text
+              className={`text-[13px] ${
+                isActive ? 'text-white font-sans-bold' : 'text-white/60 font-sans-medium'
+              }`}
+            >
               {t(`categories.${f.key}`)}
             </Text>
           </Pressable>
@@ -44,38 +52,3 @@ export function CategoryFilter({ selected, onSelect }: CategoryFilterProps) {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  scroll: { paddingVertical: 4 },
-  row: { paddingHorizontal: 16, gap: 8, alignItems: 'center' },
-  pill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 100,
-    backgroundColor: 'rgba(255,255,255,0.07)',
-    borderWidth: 1,
-    borderColor: 'rgba(197,160,89,0.2)',
-  },
-  pillActive: {
-    backgroundColor: '#B35C37',
-    borderColor: '#B35C37',
-    shadowColor: '#B35C37',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.35,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  emoji: { fontSize: 15 },
-  label: {
-    color: 'rgba(255,255,255,0.6)',
-    fontSize: 13,
-    fontFamily: 'Inter_500Medium',
-  },
-  labelActive: {
-    color: '#FFFFFF',
-    fontFamily: 'Inter_700Bold',
-  },
-});

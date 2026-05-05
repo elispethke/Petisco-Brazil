@@ -1,12 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  Pressable,
-  ImageBackground,
-  StyleSheet,
-  Animated,
-} from 'react-native';
+import { View, Text, Pressable, ImageBackground, Animated } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
@@ -19,34 +12,33 @@ const LANGUAGES: Array<{ code: Language; label: string }> = [
   { code: 'de', label: 'DE' },
 ];
 
+// LinearGradient does not support className
+const GRADIENT_STYLE = {
+  flex: 1,
+  paddingTop: 60,
+  paddingBottom: 48,
+  paddingHorizontal: 24,
+  justifyContent: 'space-between' as const,
+};
+
+const ABS_FILL = { position: 'absolute' as const, top: 0, left: 0, right: 0, bottom: 0 };
+
 export default function SplashScreen() {
   const { t } = useTranslation();
   const { language, setLanguage, setOnboarded } = useAppStore();
 
   const titleOpacity = useRef(new Animated.Value(0)).current;
-  const titleY = useRef(new Animated.Value(30)).current;
-  const btnOpacity = useRef(new Animated.Value(0)).current;
+  const titleY       = useRef(new Animated.Value(30)).current;
+  const btnOpacity   = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.sequence([
       Animated.delay(400),
       Animated.parallel([
-        Animated.timing(titleOpacity, {
-          toValue: 1,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-        Animated.timing(titleY, {
-          toValue: 0,
-          duration: 800,
-          useNativeDriver: true,
-        }),
+        Animated.timing(titleOpacity, { toValue: 1, duration: 800, useNativeDriver: true }),
+        Animated.timing(titleY,       { toValue: 0, duration: 800, useNativeDriver: true }),
       ]),
-      Animated.timing(btnOpacity, {
-        toValue: 1,
-        duration: 600,
-        useNativeDriver: true,
-      }),
+      Animated.timing(btnOpacity, { toValue: 1, duration: 600, useNativeDriver: true }),
     ]).start();
   }, []);
 
@@ -56,36 +48,32 @@ export default function SplashScreen() {
   };
 
   return (
-    <View style={StyleSheet.absoluteFill}>
+    <View style={ABS_FILL}>
       <ImageBackground
         source={require('../assets/fotoBg.jpg')}
-        style={StyleSheet.absoluteFill}
+        style={ABS_FILL}
         resizeMode="cover"
       >
         <LinearGradient
-          colors={[
-            'rgba(0,51,34,0.25)',
-            'rgba(0,51,34,0.65)',
-            'rgba(0,51,34,0.96)',
-          ]}
-          style={styles.gradient}
+          colors={['rgba(0,51,34,0.25)', 'rgba(0,51,34,0.65)', 'rgba(0,51,34,0.96)']}
+          style={GRADIENT_STYLE}
         >
           {/* Language selector */}
-          <View style={styles.langRow}>
+          <View className="flex-row justify-end gap-2">
             {LANGUAGES.map((lang) => (
               <Pressable
                 key={lang.code}
                 onPress={() => setLanguage(lang.code)}
-                style={[
-                  styles.langBtn,
-                  language === lang.code && styles.langBtnActive,
-                ]}
+                className={`px-[14px] py-1.5 rounded-[20px] border ${
+                  language === lang.code
+                    ? 'bg-brand-gold border-brand-gold'
+                    : 'border-white/30'
+                }`}
               >
                 <Text
-                  style={[
-                    styles.langText,
-                    language === lang.code && styles.langTextActive,
-                  ]}
+                  className={`text-[13px] font-semibold ${
+                    language === lang.code ? 'text-brand-green' : 'text-white/[.65]'
+                  }`}
                 >
                   {lang.label}
                 </Text>
@@ -95,25 +83,29 @@ export default function SplashScreen() {
 
           {/* Title block */}
           <Animated.View
-            style={[
-              styles.titleBlock,
-              {
-                opacity: titleOpacity,
-                transform: [{ translateY: titleY }],
-              },
-            ]}
+            className="items-center"
+            style={{ opacity: titleOpacity, transform: [{ translateY: titleY }] }}
           >
-            <Text style={styles.welcome}>{t('splash.welcome')}</Text>
-            <Text style={styles.titleLine1}>Petisco</Text>
-            <Text style={styles.titleLine2}>Brazil</Text>
-            <View style={styles.divider} />
-            <Text style={styles.tagline}>{t('splash.tagline')}</Text>
+            <Text className="text-brand-gold text-[13px] tracking-[5px] uppercase mb-3 font-sans">
+              {t('splash.welcome')}
+            </Text>
+            <Text className="text-white text-[58px] font-serif leading-[64px]">Petisco</Text>
+            <Text className="text-brand-gold text-[58px] font-serif leading-[64px]">Brazil</Text>
+            <View className="w-16 h-px bg-brand-gold/50 my-5" />
+            <Text className="text-white/70 text-[15px] text-center font-sans leading-[22px]">
+              {t('splash.tagline')}
+            </Text>
           </Animated.View>
 
           {/* CTA */}
           <Animated.View style={{ opacity: btnOpacity }}>
-            <Pressable onPress={handleStart} style={styles.ctaBtn}>
-              <Text style={styles.ctaBtnText}>{t('splash.start')}</Text>
+            <Pressable
+              onPress={handleStart}
+              className="bg-brand-terracotta rounded-2xl py-[18px] items-center active:opacity-80"
+            >
+              <Text className="text-white text-[17px] font-sans-bold">
+                {t('splash.start')}
+              </Text>
             </Pressable>
           </Animated.View>
         </LinearGradient>
@@ -121,85 +113,3 @@ export default function SplashScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  gradient: {
-    flex: 1,
-    paddingTop: 60,
-    paddingBottom: 48,
-    paddingHorizontal: 24,
-    justifyContent: 'space-between',
-  },
-  langRow: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: 8,
-  },
-  langBtn: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.3)',
-  },
-  langBtnActive: {
-    backgroundColor: '#C5A059',
-    borderColor: '#C5A059',
-  },
-  langText: {
-    color: 'rgba(255,255,255,0.65)',
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  langTextActive: {
-    color: '#003322',
-  },
-  titleBlock: {
-    alignItems: 'center',
-  },
-  welcome: {
-    color: '#C5A059',
-    fontSize: 13,
-    letterSpacing: 5,
-    textTransform: 'uppercase',
-    marginBottom: 12,
-    fontFamily: 'Inter_400Regular',
-  },
-  titleLine1: {
-    color: '#FFFFFF',
-    fontSize: 58,
-    fontFamily: 'PlayfairDisplay_700Bold',
-    lineHeight: 64,
-  },
-  titleLine2: {
-    color: '#C5A059',
-    fontSize: 58,
-    fontFamily: 'PlayfairDisplay_700Bold',
-    lineHeight: 64,
-  },
-  divider: {
-    width: 64,
-    height: 1,
-    backgroundColor: 'rgba(197,160,89,0.5)',
-    marginVertical: 20,
-  },
-  tagline: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: 15,
-    textAlign: 'center',
-    fontFamily: 'Inter_400Regular',
-    lineHeight: 22,
-  },
-  ctaBtn: {
-    backgroundColor: '#B35C37',
-    borderRadius: 16,
-    paddingVertical: 18,
-    alignItems: 'center',
-  },
-  ctaBtnText: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    fontWeight: '700',
-    fontFamily: 'Inter_700Bold',
-  },
-});

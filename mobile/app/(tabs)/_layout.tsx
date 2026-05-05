@@ -2,15 +2,15 @@ import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Home, ShoppingBag, ShoppingCart, User } from 'lucide-react-native';
 import { useCartStore } from '@/shared/store/cartStore';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { colors } from '@/shared/constants/colors';
 
 function CartBadge() {
   const count = useCartStore((s) => s.totalItems());
   if (count === 0) return null;
   return (
-    <View style={styles.badge}>
-      <Text style={styles.badgeText}>{count > 9 ? '9+' : count}</Text>
+    <View className="absolute -top-1 -right-2 bg-brand-terracotta rounded-[9px] min-w-[18px] h-[18px] items-center justify-center px-1">
+      <Text className="text-white text-[10px] font-sans-bold">{count > 9 ? '9+' : count}</Text>
     </View>
   );
 }
@@ -30,7 +30,7 @@ export default function TabLayout() {
           paddingBottom: 16,
           paddingTop: 8,
         },
-        tabBarActiveTintColor: colors.brand.gold,
+        tabBarActiveTintColor:   colors.brand.gold,
         tabBarInactiveTintColor: 'rgba(255,255,255,0.4)',
         tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       }}
@@ -71,19 +71,3 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-
-const styles = StyleSheet.create({
-  badge: {
-    position: 'absolute',
-    top: -4,
-    right: -8,
-    backgroundColor: colors.brand.terracotta,
-    borderRadius: 9,
-    minWidth: 18,
-    height: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 4,
-  },
-  badgeText: { color: '#FFF', fontSize: 10, fontFamily: 'Inter_700Bold' },
-});

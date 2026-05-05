@@ -3,11 +3,10 @@ import {
   Pressable,
   Text,
   ActivityIndicator,
-  StyleSheet,
   View,
   type PressableProps,
 } from 'react-native';
-import { Color, Font, FontSize, Radius, Shadow, Space } from '@/shared/theme/tokens';
+import { Color } from '@/shared/theme/tokens';
 
 type Variant = 'primary' | 'secondary' | 'ghost';
 
@@ -18,6 +17,18 @@ interface CTAButtonProps extends Omit<PressableProps, 'style'> {
   rightBadge?: string;
   fullWidth?: boolean;
 }
+
+const variantClasses: Record<Variant, string> = {
+  primary:   'bg-brand-terracotta shadow-lg',
+  secondary: 'bg-white border-[1.5px] border-brand-terracotta',
+  ghost:     'bg-transparent py-2',
+};
+
+const labelClasses: Record<Variant, string> = {
+  primary:   'text-white',
+  secondary: 'text-brand-terracotta',
+  ghost:     'text-brand-terracotta',
+};
 
 export function CTAButton({
   label,
@@ -34,21 +45,23 @@ export function CTAButton({
     <Pressable
       {...rest}
       disabled={isDisabled}
-      style={[
-        styles.base,
-        styles[variant],
-        fullWidth && styles.fullWidth,
-        isDisabled && styles.disabled,
-      ]}
+      className={[
+        'rounded-2xl py-[17px] px-5 items-center justify-center min-h-[54px]',
+        variantClasses[variant],
+        fullWidth ? 'self-stretch' : '',
+        isDisabled ? 'opacity-[0.55]' : 'active:opacity-80',
+      ].join(' ')}
     >
       {loading ? (
         <ActivityIndicator color={variant === 'primary' ? Color.white : Color.terracotta} />
       ) : (
-        <View style={styles.inner}>
-          <Text style={[styles.label, styles[`${variant}Label`]]}>{label}</Text>
+        <View className="flex-row items-center gap-2">
+          <Text className={`text-base font-sans-bold tracking-[0.2px] ${labelClasses[variant]}`}>
+            {label}
+          </Text>
           {rightBadge && (
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{rightBadge}</Text>
+            <View className="bg-white/[.18] rounded-lg px-2 py-1">
+              <Text className="text-white text-sm font-sans-bold">{rightBadge}</Text>
             </View>
           )}
         </View>
@@ -56,47 +69,3 @@ export function CTAButton({
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  base: {
-    borderRadius: Radius.lg,
-    paddingVertical: 17,
-    paddingHorizontal: Space[5],
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 54,
-  },
-  fullWidth: { alignSelf: 'stretch' },
-  disabled: { opacity: 0.55 },
-
-  // Variants
-  primary: {
-    backgroundColor: Color.terracotta,
-    ...Shadow.cta,
-  },
-  secondary: {
-    backgroundColor: Color.white,
-    borderWidth: 1.5,
-    borderColor: Color.terracotta,
-  },
-  ghost: {
-    backgroundColor: 'transparent',
-    paddingVertical: Space[2],
-  },
-
-  // Labels
-  inner: { flexDirection: 'row', alignItems: 'center', gap: Space[2] },
-  label: { fontSize: FontSize.md, fontFamily: Font.sansBold, letterSpacing: 0.2 },
-  primaryLabel: { color: Color.white },
-  secondaryLabel: { color: Color.terracotta },
-  ghostLabel: { color: Color.terracotta },
-
-  // Right badge (price)
-  badge: {
-    backgroundColor: 'rgba(255,255,255,0.18)',
-    borderRadius: Radius.sm,
-    paddingHorizontal: Space[2],
-    paddingVertical: 4,
-  },
-  badgeText: { color: Color.white, fontSize: FontSize.base, fontFamily: Font.sansBold },
-});

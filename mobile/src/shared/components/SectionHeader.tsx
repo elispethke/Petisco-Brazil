@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { Color, Font, FontSize, Space } from '@/shared/theme/tokens';
+import { View, Text, Pressable } from 'react-native';
 
 interface SectionHeaderProps {
   title: string;
@@ -10,33 +9,13 @@ interface SectionHeaderProps {
 
 export function SectionHeader({ title, linkLabel, onLinkPress }: SectionHeaderProps) {
   return (
-    <View style={styles.row}>
-      <Text style={styles.title}>{title}</Text>
+    <View className="flex-row items-center justify-between px-5 mb-3">
+      <Text className="text-white text-lg font-serif">{title}</Text>
       {linkLabel && onLinkPress && (
         <Pressable onPress={onLinkPress} hitSlop={12}>
-          <Text style={styles.link}>{linkLabel} →</Text>
+          <Text className="text-brand-gold text-xs font-sans-medium">{linkLabel} →</Text>
         </Pressable>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: Space[5],
-    marginBottom: Space[3],
-  },
-  title: {
-    color: Color.white,
-    fontSize: FontSize.lg,
-    fontFamily: Font.serif,
-  },
-  link: {
-    color: Color.gold,
-    fontSize: FontSize.sm,
-    fontFamily: Font.sansMedium,
-  },
-});

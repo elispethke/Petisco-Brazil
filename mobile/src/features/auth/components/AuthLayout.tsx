@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import {
   View,
   ImageBackground,
-  StyleSheet,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -13,11 +12,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const { width: W, height: H } = Dimensions.get('window');
 
+// Used for LinearGradient (does not support className) and dynamic smoke layers
+const ABS_FILL = { position: 'absolute' as const, top: 0, left: 0, right: 0, bottom: 0 };
+const SMOKE_LAYER = { ...ABS_FILL, width: W * 1.3, height: H * 1.2 };
+
 interface AuthLayoutProps {
   children: React.ReactNode;
 }
-
-// ── Animated smoky overlay — mimics the WebGL shader with layered gradients ──
 
 function SmokeyOverlay() {
   const a1 = useRef(new Animated.Value(0)).current;
@@ -50,49 +51,32 @@ function SmokeyOverlay() {
 
   return (
     <>
-      {/* Base dark overlay */}
       <LinearGradient
         colors={['rgba(0,51,34,0.18)', 'rgba(0,51,34,0.60)', 'rgba(0,20,13,0.92)']}
-        style={StyleSheet.absoluteFill}
+        style={ABS_FILL}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
       />
-
-      {/* Smoke layer 1 — drifts horizontally */}
-      <Animated.View
-        style={[
-          styles.smokeLayer,
-          { opacity: op1, transform: [{ translateX: tx1 }] },
-        ]}
-      >
+      <Animated.View style={[SMOKE_LAYER, { opacity: op1, transform: [{ translateX: tx1 }] }]}>
         <LinearGradient
           colors={['transparent', 'rgba(0,80,50,0.55)', 'transparent']}
-          style={StyleSheet.absoluteFill}
+          style={ABS_FILL}
           start={{ x: 0.2, y: 0 }}
           end={{ x: 0.8, y: 1 }}
         />
       </Animated.View>
-
-      {/* Smoke layer 2 — drifts vertically */}
-      <Animated.View
-        style={[
-          styles.smokeLayer,
-          { opacity: op2, transform: [{ translateY: ty2 }] },
-        ]}
-      >
+      <Animated.View style={[SMOKE_LAYER, { opacity: op2, transform: [{ translateY: ty2 }] }]}>
         <LinearGradient
           colors={['transparent', 'rgba(197,160,89,0.18)', 'transparent']}
-          style={StyleSheet.absoluteFill}
+          style={ABS_FILL}
           start={{ x: 0, y: 0.3 }}
           end={{ x: 1, y: 0.7 }}
         />
       </Animated.View>
-
-      {/* Smoke layer 3 — ambient pulse */}
-      <Animated.View style={[styles.smokeLayer, { opacity: op3 }]}>
+      <Animated.View style={[SMOKE_LAYER, { opacity: op3 }]}>
         <LinearGradient
           colors={['rgba(0,51,34,0.4)', 'transparent', 'rgba(0,51,34,0.4)']}
-          style={StyleSheet.absoluteFill}
+          style={ABS_FILL}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         />
@@ -101,25 +85,27 @@ function SmokeyOverlay() {
   );
 }
 
-// ── Layout ────────────────────────────────────────────────────────────────────
-
 export function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <View style={styles.root}>
+    <View className="flex-1">
       <ImageBackground
         source={require('../../../../assets/fotoBg.jpg')}
-        style={StyleSheet.absoluteFill}
+        style={ABS_FILL}
         resizeMode="cover"
       />
-
       <SmokeyOverlay />
-
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.kav}
+        className="flex-1"
       >
         <ScrollView
-          contentContainerStyle={styles.scroll}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingHorizontal: 24,
+            paddingVertical: 48,
+          }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
@@ -129,20 +115,3 @@ export function AuthLayout({ children }: AuthLayoutProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  root:  { flex: 1 },
-  kav:   { flex: 1 },
-  scroll: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 48,
-  },
-  smokeLayer: {
-    ...StyleSheet.absoluteFillObject,
-    width: W * 1.3,
-    height: H * 1.2,
-  },
-});

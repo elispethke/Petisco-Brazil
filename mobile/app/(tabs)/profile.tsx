@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight, Globe, Package, Settings } from 'lucide-react-native';
@@ -9,8 +9,8 @@ import { colors } from '@/shared/constants/colors';
 
 const LANGUAGES: Array<{ code: Language; native: string }> = [
   { code: 'pt', native: 'Português' },
-  { code: 'en', native: 'English' },
-  { code: 'de', native: 'Deutsch' },
+  { code: 'en', native: 'English'   },
+  { code: 'de', native: 'Deutsch'   },
 ];
 
 export default function ProfileScreen() {
@@ -18,51 +18,48 @@ export default function ProfileScreen() {
   const { language, setLanguage } = useAppStore();
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <View style={styles.header}>
-        <Text style={styles.title}>{t('profile.title')}</Text>
+    <SafeAreaView className="flex-1 bg-brand-green" edges={['top']}>
+      <View className="px-5 pt-3 pb-4">
+        <Text className="text-white text-2xl font-serif">{t('profile.title')}</Text>
       </View>
 
-      {/* Avatar placeholder */}
-      <View style={styles.avatar}>
-        <Text style={styles.avatarText}>PB</Text>
+      <View className="w-20 h-20 rounded-full bg-brand-green-light self-center items-center justify-center mb-8 border-2 border-brand-gold/40">
+        <Text className="text-brand-gold text-2xl font-serif">PB</Text>
       </View>
 
-      {/* Menu */}
-      <View style={styles.section}>
-        <Pressable style={styles.menuItem}>
+      <View className="mx-4 mb-4 bg-brand-green-light rounded-2xl border border-brand-gold/[.15] overflow-hidden">
+        <Pressable className="flex-row items-center p-4 gap-3 border-b border-brand-gold/10">
           <Package size={20} color={colors.brand.gold} />
-          <Text style={styles.menuLabel}>{t('profile.orders')}</Text>
+          <Text className="flex-1 text-white text-[15px] font-sans">{t('profile.orders')}</Text>
           <ChevronRight size={18} color="rgba(255,255,255,0.3)" />
         </Pressable>
-        <Pressable style={styles.menuItem}>
+        <Pressable className="flex-row items-center p-4 gap-3">
           <Settings size={20} color={colors.brand.gold} />
-          <Text style={styles.menuLabel}>{t('profile.settings')}</Text>
+          <Text className="flex-1 text-white text-[15px] font-sans">{t('profile.settings')}</Text>
           <ChevronRight size={18} color="rgba(255,255,255,0.3)" />
         </Pressable>
       </View>
 
-      {/* Language */}
-      <View style={styles.section}>
-        <View style={styles.langHeader}>
+      <View className="mx-4 bg-brand-green-light rounded-2xl border border-brand-gold/[.15] overflow-hidden">
+        <View className="flex-row items-center p-4 gap-3 border-b border-brand-gold/10">
           <Globe size={20} color={colors.brand.gold} />
-          <Text style={styles.menuLabel}>{t('profile.language')}</Text>
+          <Text className="flex-1 text-white text-[15px] font-sans">{t('profile.language')}</Text>
         </View>
-        <View style={styles.langRow}>
+        <View className="flex-row p-3 gap-2">
           {LANGUAGES.map((lang) => (
             <Pressable
               key={lang.code}
               onPress={() => setLanguage(lang.code)}
-              style={[
-                styles.langBtn,
-                language === lang.code && styles.langBtnActive,
-              ]}
+              className={`flex-1 py-[10px] rounded-[10px] items-center border ${
+                language === lang.code
+                  ? 'bg-brand-gold border-brand-gold'
+                  : 'border-brand-gold/20'
+              }`}
             >
               <Text
-                style={[
-                  styles.langText,
-                  language === lang.code && styles.langTextActive,
-                ]}
+                className={`text-[13px] font-sans-medium ${
+                  language === lang.code ? 'text-brand-green font-sans-bold' : 'text-white/60'
+                }`}
               >
                 {lang.native}
               </Text>
@@ -73,60 +70,3 @@ export default function ProfileScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.brand.green },
-  header: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 16 },
-  title: { color: '#FFF', fontSize: 24, fontFamily: 'PlayfairDisplay_700Bold' },
-  avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: colors.brand.greenLight,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 32,
-    borderWidth: 2,
-    borderColor: 'rgba(197,160,89,0.4)',
-  },
-  avatarText: { color: colors.brand.gold, fontSize: 24, fontFamily: 'PlayfairDisplay_700Bold' },
-  section: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-    backgroundColor: colors.brand.greenLight,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(197,160,89,0.15)',
-    overflow: 'hidden',
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    gap: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(197,160,89,0.1)',
-  },
-  menuLabel: { flex: 1, color: '#FFF', fontSize: 15, fontFamily: 'Inter_400Regular' },
-  langHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    gap: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(197,160,89,0.1)',
-  },
-  langRow: { flexDirection: 'row', padding: 12, gap: 8 },
-  langBtn: {
-    flex: 1,
-    paddingVertical: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(197,160,89,0.2)',
-  },
-  langBtnActive: { backgroundColor: colors.brand.gold, borderColor: colors.brand.gold },
-  langText: { color: 'rgba(255,255,255,0.6)', fontSize: 13, fontFamily: 'Inter_500Medium' },
-  langTextActive: { color: colors.brand.green, fontFamily: 'Inter_700Bold' },
-});

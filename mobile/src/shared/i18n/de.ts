@@ -92,9 +92,6 @@ const de = {
         password: 'Passwort',
         button: 'Anmelden',
         button_loading: 'Anmeldung...',
-        google: 'Mit Google fortfahren',
-        google_loading: 'Verbinden...',
-        or_divider: 'oder mit E-Mail anmelden',
         forgot_password: 'Passwort vergessen',
         forgot_sending: 'Wird gesendet...',
         forgot_success: 'Wiederherstellungs-E-Mail gesendet! Überprüfen Sie Ihren Posteingang.',
@@ -104,7 +101,6 @@ const de = {
         error_invalid: 'Falsche E-Mail oder falsches Passwort.',
         error_forgot_email: 'Geben Sie oben Ihre E-Mail-Adresse ein.',
         error_forgot_failed: 'E-Mail konnte nicht gesendet werden. Bitte Adresse prüfen.',
-        error_google_not_configured: 'Google-Login ist noch nicht konfiguriert.',
       },
       register: {
         title: 'Konto erstellen',

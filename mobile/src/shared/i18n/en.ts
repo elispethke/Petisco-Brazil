@@ -92,11 +92,6 @@ const en = {
         password: "Password",
         button: "Sign in",
         button_loading: "Signing in...",
-
-        google: "Continue with Google",
-        google_loading: "Connecting...",
-
-        or_divider: "or sign in with email",
         forgot_password: "Forgot my password",
         forgot_sending: "Sending...",
         forgot_success: "Recovery email sent! Check your inbox.",
@@ -106,7 +101,6 @@ const en = {
         error_invalid: "Incorrect email or password.",
         error_forgot_email: "Enter your email above to reset your password.",
         error_forgot_failed: "Could not send email. Please check the address.",
-        error_google_not_configured: "Google login is not configured yet.",
       },
 
       register: {

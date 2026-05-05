@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  Pressable,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import { View, Text, ScrollView, Pressable, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -61,62 +54,67 @@ const FEATURED = CATALOG_PRODUCTS.slice(0, 5);
 
 export default function HomeScreen() {
   const { language } = useAppStore();
-  const { user } = useAuthStore();
-  const lang = language as Language;
+  const { user }     = useAuthStore();
+  const lang         = language as Language;
 
   const firstName = user?.email?.split('@')[0] ?? 'bem-vindo';
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
+    <SafeAreaView className="flex-1 bg-brand-green" edges={['top']}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 16 }}>
 
-        {/* ── Header ─────────────────────────────────────────────── */}
-        <View style={styles.header}>
+        {/* Header */}
+        <View className="flex-row items-start justify-between px-5 pt-3 pb-5">
           <View>
-            <Text style={styles.greeting}>Olá, {firstName} 👋</Text>
-            <Text style={styles.headerTitle}>Petisco Brazil</Text>
+            <Text className="text-brand-gold/[.85] text-[13px] font-sans mb-1">
+              Olá, {firstName} 👋
+            </Text>
+            <Text className="text-white text-[26px] font-serif tracking-[-0.5px]">
+              Petisco Brazil
+            </Text>
           </View>
-          <View style={styles.deliveryBadge}>
-            <Text style={styles.deliveryBadgeText}>🇧🇷 Berlim</Text>
+          <View className="bg-brand-gold/[.12] rounded-[20px] px-3 py-1.5 border border-brand-gold/20 mt-1.5">
+            <Text className="text-brand-gold text-xs font-sans-medium">🇧🇷 Berlim</Text>
           </View>
         </View>
 
-        {/* ── Hero banner ─────────────────────────────────────────── */}
-        <View style={styles.heroBanner}>
+        {/* Hero banner */}
+        <View className="mx-4 rounded-3xl overflow-hidden mb-7">
           <LinearGradient
             colors={['#004B5E', '#003322']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={styles.heroBannerGradient}
+            style={{ padding: 22, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           >
-            <View style={styles.heroBannerLeft}>
-              <Text style={styles.heroBannerEyebrow}>ENCOMENDA ESPECIAL</Text>
-              <Text style={styles.heroBannerTitle}>
+            <View className="flex-1">
+              <Text className="text-brand-gold text-[10px] tracking-[3px] uppercase font-sans-medium mb-2">
+                ENCOMENDA ESPECIAL
+              </Text>
+              <Text className="text-white text-[22px] font-serif leading-7 mb-[14px]">
                 Sabor do Brasil{'\n'}na sua mesa
               </Text>
-              <View style={styles.heroBannerTagRow}>
-                <View style={styles.heroBannerTag}>
-                  <Text style={styles.heroBannerTagText}>🚚 Qua–Dom</Text>
+              <View className="flex-row gap-2 flex-wrap">
+                <View className="bg-white/[.12] rounded-[20px] px-[10px] py-[5px]">
+                  <Text className="text-white/[.85] text-[11px] font-sans-medium">🚚 Qua–Dom</Text>
                 </View>
-                <View style={styles.heroBannerTag}>
-                  <Text style={styles.heroBannerTagText}>📦 Mín. 20 un.</Text>
+                <View className="bg-white/[.12] rounded-[20px] px-[10px] py-[5px]">
+                  <Text className="text-white/[.85] text-[11px] font-sans-medium">📦 Mín. 20 un.</Text>
                 </View>
               </View>
             </View>
-            <Text style={styles.heroBannerEmoji}>🥟</Text>
+            <Text className="text-[56px] ml-4">🥟</Text>
           </LinearGradient>
         </View>
 
-        {/* ── Categories ──────────────────────────────────────────── */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Categorias</Text>
+        {/* Categories */}
+        <View className="mb-7">
+          <View className="flex-row items-center justify-between px-5 mb-[14px]">
+            <Text className="text-white text-xl font-serif">Categorias</Text>
             <Pressable onPress={() => router.push('/(tabs)/catalog')}>
-              <Text style={styles.sectionLink}>Ver tudo →</Text>
+              <Text className="text-brand-gold text-[13px] font-sans-medium">Ver tudo →</Text>
             </Pressable>
           </View>
-
-          <View style={styles.categoryGrid}>
+          <View className="flex-row flex-wrap px-4 gap-[10px]">
             {CATEGORIES.map((cat) => (
               <Pressable
                 key={cat.category}
@@ -126,11 +124,12 @@ export default function HomeScreen() {
                     params: { category: cat.category },
                   })
                 }
-                style={[styles.categoryCard, { backgroundColor: cat.color }]}
+                style={{ width: (SCREEN_WIDTH - 42) / 2, backgroundColor: cat.color }}
+                className="rounded-[20px] p-[18px] border border-brand-gold/[.12] gap-1 active:opacity-80"
               >
-                <Text style={styles.categoryEmoji}>{cat.emoji}</Text>
-                <Text style={styles.categoryLabel}>{cat.label[lang]}</Text>
-                <Text style={styles.categorySublabel} numberOfLines={1}>
+                <Text className="text-[30px] mb-1.5">{cat.emoji}</Text>
+                <Text className="text-white text-base font-sans-bold">{cat.label[lang]}</Text>
+                <Text className="text-white/50 text-[11px] font-sans" numberOfLines={1}>
                   {cat.sublabel[lang]}
                 </Text>
               </Pressable>
@@ -138,19 +137,18 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* ── Featured products ───────────────────────────────────── */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Destaques</Text>
+        {/* Featured products */}
+        <View className="mb-7">
+          <View className="flex-row items-center justify-between px-5 mb-[14px]">
+            <Text className="text-white text-xl font-serif">Destaques</Text>
             <Pressable onPress={() => router.push('/(tabs)/catalog')}>
-              <Text style={styles.sectionLink}>Ver cardápio →</Text>
+              <Text className="text-brand-gold text-[13px] font-sans-medium">Ver cardápio →</Text>
             </Pressable>
           </View>
-
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.featuredRow}
+            contentContainerStyle={{ paddingHorizontal: 16, gap: 12 }}
           >
             {FEATURED.map((product) => (
               <ProductCard key={product.id} product={product} featured />
@@ -158,183 +156,25 @@ export default function HomeScreen() {
           </ScrollView>
         </View>
 
-        {/* ── Info banner ─────────────────────────────────────────── */}
-        <View style={styles.infoBanner}>
-          <Text style={styles.infoBannerTitle}>Como funciona?</Text>
+        {/* Info banner */}
+        <View className="mx-4 bg-brand-gold/[.06] rounded-[20px] p-5 border border-brand-gold/[.18] gap-3">
+          <Text className="text-white text-base font-sans-bold mb-1">Como funciona?</Text>
           {[
             { icon: '📅', text: 'Encomende com 3 dias de antecedência' },
             { icon: '🧊', text: 'Entregamos congelado ou fresquinho — você escolhe' },
             { icon: '📍', text: 'Entregas em Berlim e arredores' },
           ].map((item, i) => (
-            <View key={i} style={styles.infoRow}>
-              <Text style={styles.infoIcon}>{item.icon}</Text>
-              <Text style={styles.infoText}>{item.text}</Text>
+            <View key={i} className="flex-row items-start gap-3">
+              <Text className="text-[18px] leading-[22px]">{item.icon}</Text>
+              <Text className="text-white/[.65] text-[13px] font-sans leading-[19px] flex-1">
+                {item.text}
+              </Text>
             </View>
           ))}
         </View>
 
-        <View style={{ height: 24 }} />
+        <View className="h-6" />
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#003322' },
-  scroll: { paddingBottom: 16 },
-
-  // Header
-  header: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 20,
-  },
-  greeting: {
-    color: 'rgba(197,160,89,0.85)',
-    fontSize: 13,
-    fontFamily: 'Inter_400Regular',
-    marginBottom: 4,
-  },
-  headerTitle: {
-    color: '#FFFFFF',
-    fontSize: 26,
-    fontFamily: 'PlayfairDisplay_700Bold',
-    letterSpacing: -0.5,
-  },
-  deliveryBadge: {
-    backgroundColor: 'rgba(197,160,89,0.12)',
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderWidth: 1,
-    borderColor: 'rgba(197,160,89,0.2)',
-    marginTop: 6,
-  },
-  deliveryBadgeText: {
-    color: '#C5A059',
-    fontSize: 12,
-    fontFamily: 'Inter_500Medium',
-  },
-
-  // Hero
-  heroBanner: {
-    marginHorizontal: 16,
-    borderRadius: 24,
-    overflow: 'hidden',
-    marginBottom: 28,
-  },
-  heroBannerGradient: {
-    padding: 22,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  heroBannerLeft: { flex: 1 },
-  heroBannerEyebrow: {
-    color: '#C5A059',
-    fontSize: 10,
-    letterSpacing: 3,
-    textTransform: 'uppercase',
-    fontFamily: 'Inter_500Medium',
-    marginBottom: 8,
-  },
-  heroBannerTitle: {
-    color: '#FFFFFF',
-    fontSize: 22,
-    fontFamily: 'PlayfairDisplay_700Bold',
-    lineHeight: 28,
-    marginBottom: 14,
-  },
-  heroBannerTagRow: { flexDirection: 'row', gap: 8, flexWrap: 'wrap' },
-  heroBannerTag: {
-    backgroundColor: 'rgba(255,255,255,0.12)',
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  heroBannerTagText: {
-    color: 'rgba(255,255,255,0.85)',
-    fontSize: 11,
-    fontFamily: 'Inter_500Medium',
-  },
-  heroBannerEmoji: { fontSize: 56, marginLeft: 16 },
-
-  // Sections
-  section: { marginBottom: 28 },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginBottom: 14,
-  },
-  sectionTitle: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontFamily: 'PlayfairDisplay_700Bold',
-  },
-  sectionLink: {
-    color: '#C5A059',
-    fontSize: 13,
-    fontFamily: 'Inter_500Medium',
-  },
-
-  // Category grid
-  categoryGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingHorizontal: 16,
-    gap: 10,
-  },
-  categoryCard: {
-    width: (SCREEN_WIDTH - 42) / 2,
-    borderRadius: 20,
-    padding: 18,
-    borderWidth: 1,
-    borderColor: 'rgba(197,160,89,0.12)',
-    gap: 4,
-  },
-  categoryEmoji: { fontSize: 30, marginBottom: 6 },
-  categoryLabel: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontFamily: 'Inter_700Bold',
-  },
-  categorySublabel: {
-    color: 'rgba(255,255,255,0.5)',
-    fontSize: 11,
-    fontFamily: 'Inter_400Regular',
-  },
-
-  // Featured
-  featuredRow: { paddingHorizontal: 16, gap: 12 },
-
-  // Info banner
-  infoBanner: {
-    marginHorizontal: 16,
-    backgroundColor: 'rgba(197,160,89,0.06)',
-    borderRadius: 20,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(197,160,89,0.18)',
-    gap: 12,
-  },
-  infoBannerTitle: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontFamily: 'Inter_700Bold',
-    marginBottom: 4,
-  },
-  infoRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
-  infoIcon: { fontSize: 18, lineHeight: 22 },
-  infoText: {
-    color: 'rgba(255,255,255,0.65)',
-    fontSize: 13,
-    fontFamily: 'Inter_400Regular',
-    lineHeight: 19,
-    flex: 1,
-  },
-});

@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  StatusBar,
-} from 'react-native';
+import { View, Text, FlatList, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { CategoryFilter } from '@/features/catalog/components/CategoryFilter';
@@ -14,11 +8,11 @@ import { useCatalog } from '@/features/catalog/hooks/useCatalog';
 import type { ProductFilter } from '@/data/products';
 
 const CATEGORY_COUNT_LABELS: Record<string, string> = {
-  all: 'produtos',
+  all:     'produtos',
   salgado: 'salgados',
-  combo: 'combos',
-  doce: 'doces',
-  bolo: 'bolos',
+  combo:   'combos',
+  doce:    'doces',
+  bolo:    'bolos',
 };
 
 export default function CatalogScreen() {
@@ -32,113 +26,48 @@ export default function CatalogScreen() {
   const countLabel = CATEGORY_COUNT_LABELS[filter] ?? 'produtos';
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView className="flex-1 bg-brand-green" edges={['top']}>
       <StatusBar barStyle="light-content" />
 
-      {/* Header */}
-      <View style={styles.header}>
+      <View className="flex-row items-end justify-between px-5 pt-2 pb-4">
         <View>
-          <Text style={styles.headerEyebrow}>Cardápio</Text>
-          <Text style={styles.headerTitle}>Petisco Brazil</Text>
+          <Text className="text-brand-gold text-[11px] tracking-[3px] uppercase font-sans-medium mb-1">
+            Cardápio
+          </Text>
+          <Text className="text-white text-[28px] font-serif tracking-[-0.5px]">
+            Petisco Brazil
+          </Text>
         </View>
-        <View style={styles.countBadge}>
-          <Text style={styles.countText}>
+        <View className="bg-brand-gold/[.12] rounded-[20px] px-3 py-[5px] border border-brand-gold/25 mb-[3px]">
+          <Text className="text-brand-gold text-xs font-sans-medium">
             {products.length} {countLabel}
           </Text>
         </View>
       </View>
 
-      {/* Category pills */}
-      <View style={styles.filterWrapper}>
+      <View className="pb-2">
         <CategoryFilter selected={filter} onSelect={setFilter} />
       </View>
 
-      {/* Divider */}
-      <View style={styles.divider} />
+      <View className="h-px bg-white/[.06] mx-4 mb-4" />
 
-      {/* Product grid */}
       <FlatList
         key={filter}
         data={products}
         keyExtractor={(item) => item.id}
         numColumns={2}
-        columnWrapperStyle={styles.row}
-        contentContainerStyle={styles.grid}
+        columnWrapperStyle={{ gap: 14, justifyContent: 'space-between' }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 40, gap: 14 }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => <ProductCard product={item} />}
         ListEmptyComponent={
-          <View style={styles.empty}>
-            <Text style={styles.emptyText}>Nenhum produto nesta categoria</Text>
+          <View className="pt-20 items-center">
+            <Text className="text-white/30 text-[15px] font-sans">
+              Nenhum produto nesta categoria
+            </Text>
           </View>
         }
       />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#003322' },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    paddingBottom: 16,
-  },
-  headerEyebrow: {
-    color: '#C5A059',
-    fontSize: 11,
-    letterSpacing: 3,
-    textTransform: 'uppercase',
-    fontFamily: 'Inter_500Medium',
-    marginBottom: 4,
-  },
-  headerTitle: {
-    color: '#FFFFFF',
-    fontSize: 28,
-    fontFamily: 'PlayfairDisplay_700Bold',
-    letterSpacing: -0.5,
-  },
-  countBadge: {
-    backgroundColor: 'rgba(197,160,89,0.12)',
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderWidth: 1,
-    borderColor: 'rgba(197,160,89,0.25)',
-    marginBottom: 3,
-  },
-  countText: {
-    color: '#C5A059',
-    fontSize: 12,
-    fontFamily: 'Inter_500Medium',
-  },
-  filterWrapper: {
-    paddingBottom: 8,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: 'rgba(255,255,255,0.06)',
-    marginHorizontal: 16,
-    marginBottom: 16,
-  },
-  grid: {
-    paddingHorizontal: 16,
-    paddingBottom: 40,
-    gap: 14,
-  },
-  row: {
-    gap: 14,
-    justifyContent: 'space-between',
-  },
-  empty: {
-    paddingTop: 80,
-    alignItems: 'center',
-  },
-  emptyText: {
-    color: 'rgba(255,255,255,0.3)',
-    fontSize: 15,
-    fontFamily: 'Inter_400Regular',
-  },
-});

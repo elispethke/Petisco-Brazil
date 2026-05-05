@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import { View, Text, Image, Pressable, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import { CatalogProduct } from '@/shared/types';
@@ -15,6 +8,9 @@ import { DynamicPricingSelector } from './DynamicPricingSelector';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = (SCREEN_WIDTH - 48) / 2;
+
+// LinearGradient does not support className — inline object required
+const ABS_FILL = { position: 'absolute' as const, top: 0, left: 0, right: 0, bottom: 0 };
 
 const CATEGORY_COLORS: Record<string, string> = {
   salgado: '#004B5E',
@@ -47,42 +43,49 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
   return (
     <>
       <Pressable
-        style={[styles.card, { width: cardWidth }]}
+        style={{ width: cardWidth }}
+        className="bg-white rounded-[20px] overflow-hidden shadow-md active:opacity-90"
         onPress={() => setSelectorOpen(true)}
         android_ripple={{ color: 'rgba(0,0,0,0.04)' }}
       >
-        {/* Image with gradient */}
-        <View style={[styles.imageContainer, { height: imageHeight }]}>
-          <Image
-            source={product.image}
-            style={StyleSheet.absoluteFill}
-            resizeMode="cover"
-          />
+        <View style={{ height: imageHeight }} className="w-full bg-[#C8B89A] overflow-hidden">
+          <Image source={product.image} style={ABS_FILL} resizeMode="cover" />
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.38)']}
-            style={StyleSheet.absoluteFill}
+            style={ABS_FILL}
             start={{ x: 0, y: 0.4 }}
             end={{ x: 0, y: 1 }}
           />
-          <View style={[styles.categoryBadge, { backgroundColor: categoryColor }]}>
-            <Text style={styles.categoryText}>{categoryLabel}</Text>
+          <View
+            className="absolute top-[10px] left-[10px] rounded-[20px] px-[10px] py-1"
+            style={{ backgroundColor: categoryColor }}
+          >
+            <Text className="text-white text-[10px] font-sans-bold uppercase tracking-[0.6px]">
+              {categoryLabel}
+            </Text>
           </View>
         </View>
 
-        {/* Content */}
-        <View style={styles.content}>
-          <Text style={styles.name} numberOfLines={1}>{name}</Text>
-          <Text style={styles.description} numberOfLines={1}>{description}</Text>
-
-          <View style={styles.footer}>
+        <View className="p-[13px] gap-1.5">
+          <Text className="text-[#1A1A1A] text-sm font-sans-bold tracking-[-0.1px]" numberOfLines={1}>
+            {name}
+          </Text>
+          <Text className="text-gray-400 text-[11px] font-sans leading-[15px]" numberOfLines={1}>
+            {description}
+          </Text>
+          <View className="flex-row items-center justify-between mt-1">
             <View>
               {!isBolo && (
-                <Text style={styles.fromLabel}>{t('product.fromLabel')}</Text>
+                <Text className="text-gray-400 text-[9px] font-sans lowercase">
+                  {t('product.fromLabel')}
+                </Text>
               )}
-              <Text style={styles.price}>{formatEuro(startingPrice)}</Text>
+              <Text className="text-brand-green text-[17px] font-serif tracking-[-0.3px]">
+                {formatEuro(startingPrice)}
+              </Text>
             </View>
-            <View style={styles.addButton}>
-              <Text style={styles.addButtonText}>
+            <View className="bg-brand-terracotta rounded-[10px] px-[14px] py-2 shadow-sm">
+              <Text className="text-white text-xs font-sans-bold">
                 {isBolo ? t('product.orderBolo') : t('product.choose')}
               </Text>
             </View>
@@ -98,86 +101,3 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.10,
-    shadowRadius: 16,
-    elevation: 5,
-  },
-  imageContainer: {
-    width: '100%',
-    backgroundColor: '#C8B89A',
-    overflow: 'hidden',
-  },
-  categoryBadge: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-  },
-  categoryText: {
-    color: '#FFFFFF',
-    fontSize: 10,
-    fontFamily: 'Inter_700Bold',
-    textTransform: 'uppercase',
-    letterSpacing: 0.6,
-  },
-  content: {
-    padding: 13,
-    gap: 6,
-  },
-  name: {
-    color: '#1A1A1A',
-    fontSize: 14,
-    fontFamily: 'Inter_700Bold',
-    letterSpacing: -0.1,
-  },
-  description: {
-    color: '#9CA3AF',
-    fontSize: 11,
-    fontFamily: 'Inter_400Regular',
-    lineHeight: 15,
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 4,
-  },
-  fromLabel: {
-    color: '#9CA3AF',
-    fontSize: 9,
-    fontFamily: 'Inter_400Regular',
-    textTransform: 'lowercase',
-  },
-  price: {
-    color: '#003322',
-    fontSize: 17,
-    fontFamily: 'PlayfairDisplay_700Bold',
-    letterSpacing: -0.3,
-  },
-  addButton: {
-    backgroundColor: '#B35C37',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    shadowColor: '#B35C37',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  addButtonText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontFamily: 'Inter_700Bold',
-  },
-});
