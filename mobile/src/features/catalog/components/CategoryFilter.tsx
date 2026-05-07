@@ -32,16 +32,16 @@ export function CategoryFilter({ selected, onSelect }: CategoryFilterProps) {
           <Pressable
             key={f.key}
             onPress={() => onSelect(f.key)}
-            className={`flex-row items-center gap-1.5 px-4 py-[10px] rounded-full border ${
+            className={`flex-row items-center gap-[7px] px-[14px] py-[9px] rounded-full active:scale-[0.95] active:opacity-75 ${
               isActive
-                ? 'bg-brand-terracotta border-brand-terracotta shadow-md'
-                : 'bg-white/[.07] border-brand-gold/20'
+                ? 'bg-white'
+                : 'bg-white/[.06] border border-white/[.08]'
             }`}
           >
-            <Text className="text-[15px]">{f.emoji}</Text>
+            <Text className="text-[13px] leading-none">{f.emoji}</Text>
             <Text
               className={`text-[13px] ${
-                isActive ? 'text-white font-sans-bold' : 'text-white/60 font-sans-medium'
+                isActive ? 'text-brand-green font-sans-bold' : 'text-white/50 font-sans'
               }`}
             >
               {t(`categories.${f.key}`)}

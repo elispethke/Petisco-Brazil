@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AppBackground } from '@/shared/components/AppBackground';
 import { useTranslation } from 'react-i18next';
 import { router } from 'expo-router';
 import { ShoppingCart } from 'lucide-react-native';
@@ -20,7 +21,8 @@ export default function CartScreen() {
   const isEmpty = items.length === 0;
 
   return (
-    <SafeAreaView className="flex-1 bg-brand-green" edges={['top']}>
+    <AppBackground>
+    <SafeAreaView className="flex-1 bg-transparent" edges={['top']}>
       <View className="flex-row items-center justify-between px-5 pt-3 pb-4">
         <Text className="text-white text-2xl font-serif">{t('cart.title')}</Text>
         {!isEmpty && (
@@ -49,7 +51,7 @@ export default function CartScreen() {
               <CartItemCard item={item} onRemove={removeItem} />
             )}
           />
-          <View className="absolute bottom-0 left-0 right-0 bg-brand-green border-t border-brand-gold/20 p-5 pb-8 gap-3">
+          <View className="absolute bottom-0 left-0 right-0 border-t border-brand-gold/20 p-5 pb-8 gap-3" style={{ backgroundColor: 'rgba(0,22,12,0.97)' }}>
             <View className="flex-row justify-between items-center">
               <Text className="text-white/70 text-base font-sans">{t('cart.total')}</Text>
               <Text className="text-white text-2xl font-serif">{formatEuro(totalPrice)}</Text>
@@ -64,5 +66,6 @@ export default function CartScreen() {
         </>
       )}
     </SafeAreaView>
+    </AppBackground>
   );
 }

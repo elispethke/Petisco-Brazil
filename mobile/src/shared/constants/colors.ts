@@ -4,7 +4,7 @@ export const colors = {
     greenLight: '#004d33',
     gold: '#C5A059',
     goldMuted: 'rgba(197,160,89,0.5)',
-    terracotta: '#B35C37',
+    terracotta: '#E8B422',
     petrol: '#004B5E',
   },
   ui: {

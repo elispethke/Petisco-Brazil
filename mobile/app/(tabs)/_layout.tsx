@@ -23,8 +23,8 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: colors.brand.green,
-          borderTopColor: 'rgba(197,160,89,0.2)',
+          backgroundColor: 'rgba(0,24,12,0.92)',
+          borderTopColor: 'rgba(197,160,89,0.25)',
           borderTopWidth: 1,
           height: 80,
           paddingBottom: 16,

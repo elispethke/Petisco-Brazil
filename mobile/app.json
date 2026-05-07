@@ -21,7 +21,12 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#003322"
       },
-      "package": "com.petiscobrazil.app"
+      "package": "com.petiscobrazil.app",
+      "softwareKeyboardLayoutMode": "adjustResize",
+      "navigationBar": {
+        "backgroundColor": "#003322",
+        "barStyle": "dark-content"
+      }
     },
     "web": {
       "favicon": "./assets/icon.png",
@@ -36,6 +41,13 @@
           "backgroundColor": "#003322",
           "image": "./assets/fotoBg.jpg",
           "imageWidth": 200
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Precisamos de acesso à câmera para registrar a entrega.",
+          "photosPermission": "Precisamos de acesso à galeria para enviar comprovante."
         }
       ]
     ],

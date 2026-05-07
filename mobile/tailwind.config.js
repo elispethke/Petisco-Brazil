@@ -11,7 +11,7 @@ module.exports = {
         brand: {
           green: '#003322',
           gold: '#C5A059',
-          terracotta: '#B35C37',
+          terracotta: '#E8B422',
           petrol: '#004B5E',
           'green-light': '#004d33',
           'gold-muted': '#C5A05980',

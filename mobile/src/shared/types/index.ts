@@ -28,7 +28,7 @@ export interface CartItem {
   totalPrice: number; // EUR cents from pricing table
 }
 
-export type OrderStatus = 'pending' | 'preparing' | 'delivered';
+export type OrderStatus = 'pending' | 'accepted' | 'delivering' | 'delivered';
 
 export interface Order {
   id: string;
@@ -39,6 +39,45 @@ export interface Order {
   scheduledTime: string;
   totalPrice: number;
   createdAt: string;
+}
+
+// Serializable item stored inside a Firestore order document
+export interface OrderItem {
+  id:       string;
+  name:     string; // PT canonical name
+  quantity: number;
+  price:    number; // EUR cents (total for this line item)
+}
+
+export interface DeliveryAddress {
+  street:  string;
+  number:  string;
+  city:    string;
+  zipCode: string;
+  country: string;
+  lat:     number;
+  lng:     number;
+}
+
+// Firestore document shape for the `orders` collection
+export interface FirestoreOrder {
+  id:                string;
+  userId:            string;
+  items:             OrderItem[];
+  total:             number; // EUR cents
+  status:            OrderStatus;
+  deliveryDate?:     string;
+  deliveryTime?:     string;
+  assignedDriverId?: string;
+  address?:          DeliveryAddress;
+  createdAt:         unknown; // Firestore serverTimestamp
+  deliveredAt?:      unknown; // serverTimestamp set on delivery completion
+  deliveredBy?:      string;  // driver uid
+  proofImageUrl?:    string;  // Firebase Storage URL
+  // Location foundation — populated by future live-tracking feature
+  driverLat?:           number;
+  driverLng?:           number;
+  locationUpdatedAt?:   unknown;
 }
 
 export interface User {

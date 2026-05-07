@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Pressable, ImageBackground, Animated } from 'react-native';
+import { View, Text, Pressable, ImageBackground, Animated, Platform } from 'react-native';
+import * as NavigationBar from 'expo-navigation-bar';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
@@ -30,6 +31,13 @@ export default function SplashScreen() {
   const titleOpacity = useRef(new Animated.Value(0)).current;
   const titleY       = useRef(new Animated.Value(30)).current;
   const btnOpacity   = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      NavigationBar.setBackgroundColorAsync('#003322');
+      NavigationBar.setButtonStyleAsync('light');
+    }
+  }, []);
 
   useEffect(() => {
     Animated.sequence([

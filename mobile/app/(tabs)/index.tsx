@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, ScrollView, Pressable, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AppBackground } from '@/shared/components/AppBackground';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import { ProductCard } from '@/features/catalog/components/ProductCard';
+import { DynamicPricingSelector } from '@/features/catalog/components/DynamicPricingSelector';
 import { CATALOG_PRODUCTS } from '@/data/products';
-import type { Language, ProductCategory } from '@/shared/types';
+import type { CatalogProduct, Language, ProductCategory } from '@/shared/types';
 import { useAppStore } from '@/shared/store/appStore';
 import { useAuthStore } from '@/shared/store/authStore';
+import { useCartStore } from '@/shared/store/cartStore';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -52,22 +56,49 @@ const CATEGORIES: CategoryCard[] = [
 
 const FEATURED = CATALOG_PRODUCTS.slice(0, 5);
 
+const STRINGS: Record<string, Record<Language, string>> = {
+  greeting:     { pt: 'Olá',          en: 'Hello',       de: 'Hallo'         },
+  heroEyebrow:  { pt: 'ENCOMENDA ESPECIAL', en: 'SPECIAL ORDER', de: 'SONDERBESTELLUNG' },
+  heroTitle:    { pt: 'Sabor do Brasil\nna sua mesa', en: 'Brazilian flavors\nat your door', de: 'Brasilianischer\nGenuss bei dir' },
+  heroBadge1:   { pt: '🚚 Qua–Dom',   en: '🚚 Wed–Sun',  de: '🚚 Mi–So'      },
+  heroBadge2:   { pt: '📦 Mín. 20 un.', en: '📦 Min. 20 pc.', de: '📦 Mind. 20 St.' },
+  categories:   { pt: 'Categorias',   en: 'Categories',  de: 'Kategorien'    },
+  viewAll:      { pt: 'Ver tudo →',   en: 'View all →',  de: 'Alle →'        },
+  featured:     { pt: 'Destaques',    en: 'Featured',    de: 'Highlights'    },
+  viewMenu:     { pt: 'Ver cardápio →', en: 'View menu →', de: 'Menü →'      },
+  howTitle:     { pt: 'Como funciona?', en: 'How it works?', de: 'Wie läuft\'s?' },
+  how1:         { pt: 'Encomende com 3 dias de antecedência', en: 'Order 3 days in advance', de: 'Bestelle 3 Tage im Voraus' },
+  how2:         { pt: 'Entregamos congelado ou fresquinho — você escolhe', en: 'Delivered frozen or fresh — your choice', de: 'Gefroren oder frisch geliefert — deine Wahl' },
+  how3:         { pt: 'Entregas em Berlim e arredores', en: 'Deliveries in Berlin and surroundings', de: 'Lieferung in Berlin und Umgebung' },
+};
+
 export default function HomeScreen() {
+  const { t }        = useTranslation();
   const { language } = useAppStore();
   const { user }     = useAuthStore();
+  const addItem      = useCartStore((s) => s.addItem);
   const lang         = language as Language;
+  const s            = (key: string) => STRINGS[key][lang];
 
   const firstName = user?.email?.split('@')[0] ?? 'bem-vindo';
 
+  const [selectedProduct, setSelectedProduct] = useState<CatalogProduct | null>(null);
+  const [isSelectorOpen, setIsSelectorOpen]   = useState(false);
+  const handleProductPress = useCallback((p: CatalogProduct) => {
+    setSelectedProduct(p);
+    setIsSelectorOpen(true);
+  }, []);
+
   return (
-    <SafeAreaView className="flex-1 bg-brand-green" edges={['top']}>
+    <AppBackground>
+    <SafeAreaView className="flex-1 bg-transparent" edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 16 }}>
 
         {/* Header */}
         <View className="flex-row items-start justify-between px-5 pt-3 pb-5">
           <View>
             <Text className="text-brand-gold/[.85] text-[13px] font-sans mb-1">
-              Olá, {firstName} 👋
+              {s('greeting')}, {firstName} 👋
             </Text>
             <Text className="text-white text-[26px] font-serif tracking-[-0.5px]">
               Petisco Brazil
@@ -81,24 +112,24 @@ export default function HomeScreen() {
         {/* Hero banner */}
         <View className="mx-4 rounded-3xl overflow-hidden mb-7">
           <LinearGradient
-            colors={['#004B5E', '#003322']}
+            colors={['#C5A059', '#003322'] /* was: ['#004B5E', '#003322'] */}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{ padding: 22, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           >
             <View className="flex-1">
-              <Text className="text-brand-gold text-[10px] tracking-[3px] uppercase font-sans-medium mb-2">
-                ENCOMENDA ESPECIAL
+              <Text className="text-brand-green text-[10px] tracking-[3px] uppercase font-sans-bold mb-4">
+                {s('heroEyebrow')}
               </Text>
               <Text className="text-white text-[22px] font-serif leading-7 mb-[14px]">
-                Sabor do Brasil{'\n'}na sua mesa
+                {s('heroTitle')}
               </Text>
               <View className="flex-row gap-2 flex-wrap">
                 <View className="bg-white/[.12] rounded-[20px] px-[10px] py-[5px]">
-                  <Text className="text-white/[.85] text-[11px] font-sans-medium">🚚 Qua–Dom</Text>
+                  <Text className="text-white/[.85] text-[11px] font-sans-medium">{s('heroBadge1')}</Text>
                 </View>
                 <View className="bg-white/[.12] rounded-[20px] px-[10px] py-[5px]">
-                  <Text className="text-white/[.85] text-[11px] font-sans-medium">📦 Mín. 20 un.</Text>
+                  <Text className="text-white/[.85] text-[11px] font-sans-medium">{s('heroBadge2')}</Text>
                 </View>
               </View>
             </View>
@@ -109,9 +140,9 @@ export default function HomeScreen() {
         {/* Categories */}
         <View className="mb-7">
           <View className="flex-row items-center justify-between px-5 mb-[14px]">
-            <Text className="text-white text-xl font-serif">Categorias</Text>
+            <Text className="text-white text-xl font-serif">{s('categories')}</Text>
             <Pressable onPress={() => router.push('/(tabs)/catalog')}>
-              <Text className="text-brand-gold text-[13px] font-sans-medium">Ver tudo →</Text>
+              <Text className="text-brand-gold text-[13px] font-sans-medium">{s('viewAll')}</Text>
             </Pressable>
           </View>
           <View className="flex-row flex-wrap px-4 gap-[10px]">
@@ -124,12 +155,17 @@ export default function HomeScreen() {
                     params: { category: cat.category },
                   })
                 }
-                style={{ width: (SCREEN_WIDTH - 42) / 2, backgroundColor: cat.color }}
-                className="rounded-[20px] p-[18px] border border-brand-gold/[.12] gap-1 active:opacity-80"
+                style={{
+                  width: (SCREEN_WIDTH - 42) / 2,
+                  backgroundColor: 'rgba(255, 252, 248, 0.06)',
+                  borderWidth: 1,
+                  borderColor: 'rgba(255, 255, 255, 0.09)',
+                }}
+                className="rounded-[20px] p-[18px] gap-1 active:scale-[0.97] active:opacity-80"
               >
-                <Text className="text-[30px] mb-1.5">{cat.emoji}</Text>
-                <Text className="text-white text-base font-sans-bold">{cat.label[lang]}</Text>
-                <Text className="text-white/50 text-[11px] font-sans" numberOfLines={1}>
+                <Text className="text-[28px] mb-1">{cat.emoji}</Text>
+                <Text className="text-white text-[15px] font-sans-bold tracking-[-0.1px]">{cat.label[lang]}</Text>
+                <Text className="text-white/45 text-[11px] font-sans" numberOfLines={1}>
                   {cat.sublabel[lang]}
                 </Text>
               </Pressable>
@@ -140,9 +176,9 @@ export default function HomeScreen() {
         {/* Featured products */}
         <View className="mb-7">
           <View className="flex-row items-center justify-between px-5 mb-[14px]">
-            <Text className="text-white text-xl font-serif">Destaques</Text>
+            <Text className="text-white text-xl font-serif">{s('featured')}</Text>
             <Pressable onPress={() => router.push('/(tabs)/catalog')}>
-              <Text className="text-brand-gold text-[13px] font-sans-medium">Ver cardápio →</Text>
+              <Text className="text-brand-gold text-[13px] font-sans-medium">{s('viewMenu')}</Text>
             </Pressable>
           </View>
           <ScrollView
@@ -151,18 +187,18 @@ export default function HomeScreen() {
             contentContainerStyle={{ paddingHorizontal: 16, gap: 12 }}
           >
             {FEATURED.map((product) => (
-              <ProductCard key={product.id} product={product} featured />
+              <ProductCard key={product.id} product={product} featured onPress={handleProductPress} />
             ))}
           </ScrollView>
         </View>
 
         {/* Info banner */}
         <View className="mx-4 bg-brand-gold/[.06] rounded-[20px] p-5 border border-brand-gold/[.18] gap-3">
-          <Text className="text-white text-base font-sans-bold mb-1">Como funciona?</Text>
+          <Text className="text-white text-base font-sans-bold mb-1">{s('howTitle')}</Text>
           {[
-            { icon: '📅', text: 'Encomende com 3 dias de antecedência' },
-            { icon: '🧊', text: 'Entregamos congelado ou fresquinho — você escolhe' },
-            { icon: '📍', text: 'Entregas em Berlim e arredores' },
+            { icon: '📅', text: s('how1') },
+            { icon: '🧊', text: s('how2') },
+            { icon: '📍', text: s('how3') },
           ].map((item, i) => (
             <View key={i} className="flex-row items-start gap-3">
               <Text className="text-[18px] leading-[22px]">{item.icon}</Text>
@@ -175,6 +211,19 @@ export default function HomeScreen() {
 
         <View className="h-6" />
       </ScrollView>
+
+      {isSelectorOpen && selectedProduct && (
+        <DynamicPricingSelector
+          product={selectedProduct}
+          visible={true}
+          onClose={() => setIsSelectorOpen(false)}
+          onConfirm={({ product, quantity, price }) => {
+            addItem(product, quantity, price);
+            setIsSelectorOpen(false);
+          }}
+        />
+      )}
     </SafeAreaView>
+    </AppBackground>
   );
 }

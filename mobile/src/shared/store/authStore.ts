@@ -1,35 +1,27 @@
 import { create } from 'zustand';
-import type { User } from 'firebase/auth';
+import type { UserRole, UserStatus } from '@/features/auth/services/userService';
 
-export type UserRole = 'customer' | 'delivery' | 'production' | 'admin';
+export type { UserRole, UserStatus };
 
 export interface AuthUser {
-  uid: string;
-  email: string | null;
-  role: UserRole;
+  uid:    string;
+  email:  string | null;
+  role:   UserRole;
+  status: UserStatus;
 }
 
 interface AuthState {
-  user: AuthUser | null;
-  isLoading: boolean;
-  setUser: (user: AuthUser | null) => void;
+  user:       AuthUser | null;
+  isLoading:  boolean;
+  setUser:    (user: AuthUser | null) => void;
   setLoading: (loading: boolean) => void;
-  signOut: () => void;
-}
-
-const ADMIN_EMAIL = 'elispethke@gmail.com';
-
-export function resolveRole(email: string | null, dbRole?: string): UserRole {
-  if (email === ADMIN_EMAIL) return 'admin';
-  if (dbRole === 'delivery') return 'delivery';
-  if (dbRole === 'production') return 'production';
-  return 'customer';
+  signOut:    () => void;
 }
 
 export const useAuthStore = create<AuthState>()((set) => ({
-  user: null,
-  isLoading: true,
-  setUser: (user) => set({ user, isLoading: false }),
+  user:       null,
+  isLoading:  true,
+  setUser:    (user) => set({ user, isLoading: false }),
   setLoading: (isLoading) => set({ isLoading }),
-  signOut: () => set({ user: null }),
+  signOut:    () => set({ user: null }),
 }));

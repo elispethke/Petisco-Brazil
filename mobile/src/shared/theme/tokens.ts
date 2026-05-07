@@ -10,8 +10,8 @@ export const Color = {
   gold:         '#C5A059',
   goldMuted:    'rgba(197,160,89,0.12)',
   goldBorder:   'rgba(197,160,89,0.2)',
-  terracotta:   '#B35C37',
-  terracottaDim: 'rgba(179,92,55,0.12)',
+  terracotta:   '#E8B422',
+  terracottaDim: 'rgba(232,180,34,0.12)',
 
   // Neutrals
   white:        '#FFFFFF',
@@ -27,9 +27,9 @@ export const Color = {
   success:      '#166534',
   successBg:    'rgba(22,101,52,0.08)',
   successBorder:'rgba(22,101,52,0.2)',
-  error:        '#B35C37',
-  errorBg:      'rgba(179,92,55,0.08)',
-  errorBorder:  'rgba(179,92,55,0.2)',
+  error:        '#E8B422',
+  errorBg:      'rgba(232,180,34,0.08)',
+  errorBorder:  'rgba(232,180,34,0.2)',
 
   // Overlay
   scrim:        'rgba(0,0,0,0.65)',

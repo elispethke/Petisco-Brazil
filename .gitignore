@@ -1,1 +1,47 @@
+# dependencies
 node_modules
+
+# expo
+.expo
+.expo-shared
+
+# builds
+dist
+build
+web-build
+
+# caches
+.cache
+metro-cache
+*.log
+
+# macOS
+.DS_Store
+
+# environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# firebase
+google-services.json
+GoogleService-Info.plist
+
+# native builds
+ios/build
+android/build
+
+# xcode
+*.xcworkspace
+xcuserdata
+
+# android
+*.keystore
+
+# misc
+coverage
+tmp
+temp
+
