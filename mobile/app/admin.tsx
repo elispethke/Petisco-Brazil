@@ -68,9 +68,14 @@ function Card({ children }: { children: React.ReactNode }) {
     <View
       className="rounded-2xl p-4 gap-3"
       style={{
-        backgroundColor: 'rgba(255,252,248,0.12)',
+        backgroundColor: 'rgba(7,31,16,0.82)', // antes estava transparente demais
         borderWidth: 1,
         borderColor: 'rgba(255,255,255,0.10)',
+        shadowColor: '#000',
+        shadowOpacity: 0.18,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 4,
       }}
     >
       {children}
@@ -502,9 +507,13 @@ export default function AdminScreen() {
                   onPress={() => setOrderFilter(f.key)}
                   className="rounded-xl px-3 py-[7px] active:opacity-70"
                   style={{
-                    backgroundColor: active ? 'rgba(197,160,89,0.20)' : 'rgba(255,252,248,0.08)',
+                    backgroundColor: active
+                      ? 'rgba(7,31,16,0.82)'
+                      : 'rgba(7,31,16,0.82)',
                     borderWidth: 1,
-                    borderColor: active ? 'rgba(197,160,89,0.45)' : 'rgba(255,255,255,0.08)',
+                    borderColor: active
+                      ? 'rgba(197,160,89,0.45)'
+                      : 'rgba(255,255,255,0.08)',
                   }}
                 >
                   <Text

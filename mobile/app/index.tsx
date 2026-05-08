@@ -1,5 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Pressable, ImageBackground, Animated, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  ImageBackground,
+  Animated,
+  Platform,
+} from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -13,7 +20,6 @@ const LANGUAGES: Array<{ code: Language; label: string }> = [
   { code: 'de', label: 'DE' },
 ];
 
-// LinearGradient does not support className
 const GRADIENT_STYLE = {
   flex: 1,
   paddingTop: 60,
@@ -22,15 +28,21 @@ const GRADIENT_STYLE = {
   justifyContent: 'space-between' as const,
 };
 
-const ABS_FILL = { position: 'absolute' as const, top: 0, left: 0, right: 0, bottom: 0 };
+const ABS_FILL = {
+  position: 'absolute' as const,
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+};
 
 export default function SplashScreen() {
   const { t } = useTranslation();
   const { language, setLanguage, setOnboarded } = useAppStore();
 
   const titleOpacity = useRef(new Animated.Value(0)).current;
-  const titleY       = useRef(new Animated.Value(30)).current;
-  const btnOpacity   = useRef(new Animated.Value(0)).current;
+  const titleY = useRef(new Animated.Value(30)).current;
+  const btnOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -43,10 +55,22 @@ export default function SplashScreen() {
     Animated.sequence([
       Animated.delay(400),
       Animated.parallel([
-        Animated.timing(titleOpacity, { toValue: 1, duration: 800, useNativeDriver: true }),
-        Animated.timing(titleY,       { toValue: 0, duration: 800, useNativeDriver: true }),
+        Animated.timing(titleOpacity, {
+          toValue: 1,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+        Animated.timing(titleY, {
+          toValue: 0,
+          duration: 800,
+          useNativeDriver: true,
+        }),
       ]),
-      Animated.timing(btnOpacity, { toValue: 1, duration: 600, useNativeDriver: true }),
+      Animated.timing(btnOpacity, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
     ]).start();
   }, []);
 
@@ -63,7 +87,11 @@ export default function SplashScreen() {
         resizeMode="cover"
       >
         <LinearGradient
-          colors={['rgba(0,51,34,0.25)', 'rgba(0,51,34,0.65)', 'rgba(0,51,34,0.96)']}
+          colors={[
+            'rgba(0,51,34,0.25)',
+            'rgba(0,51,34,0.65)',
+            'rgba(0,51,34,0.96)',
+          ]}
           style={GRADIENT_STYLE}
         >
           {/* Language selector */}
@@ -72,16 +100,16 @@ export default function SplashScreen() {
               <Pressable
                 key={lang.code}
                 onPress={() => setLanguage(lang.code)}
-                className={`px-[14px] py-1.5 rounded-[20px] border ${
-                  language === lang.code
+                className={`px-[14px] py-1.5 rounded-[20px] border ${language === lang.code
                     ? 'bg-brand-gold border-brand-gold'
                     : 'border-white/30'
-                }`}
+                  }`}
               >
                 <Text
-                  className={`text-[13px] font-semibold ${
-                    language === lang.code ? 'text-brand-green' : 'text-white/[.65]'
-                  }`}
+                  className={`text-[13px] font-semibold ${language === lang.code
+                      ? 'text-brand-green'
+                      : 'text-white/[.65]'
+                    }`}
                 >
                   {lang.label}
                 </Text>
@@ -92,15 +120,46 @@ export default function SplashScreen() {
           {/* Title block */}
           <Animated.View
             className="items-center"
-            style={{ opacity: titleOpacity, transform: [{ translateY: titleY }] }}
+            style={{
+              opacity: titleOpacity,
+              transform: [{ translateY: titleY }],
+            }}
           >
             <Text className="text-brand-gold text-[13px] tracking-[5px] uppercase mb-3 font-sans">
               {t('splash.welcome')}
             </Text>
-            <Text className="text-white text-[58px] font-serif leading-[64px]">Petisco</Text>
-            <Text className="text-brand-gold text-[58px] font-serif leading-[64px]">Brazil</Text>
+
+            <View className="items-center px-2">
+              <Text
+                style={{
+                  fontSize: 58,
+                  lineHeight: 68,
+                  color: 'white',
+                  fontFamily: 'PlayfairDisplay-Bold',
+                  textAlign: 'center',
+                  includeFontPadding: false,
+                }}
+              >
+                Petisco
+              </Text>
+
+              <Text
+                style={{
+                  fontSize: 58,
+                  lineHeight: 68,
+                  color: '#D4A95A',
+                  fontFamily: 'PlayfairDisplay-Bold',
+                  textAlign: 'center',
+                  includeFontPadding: false,
+                }}
+              >
+                Brazil
+              </Text>
+            </View>
+
             <View className="w-16 h-px bg-brand-gold/50 my-5" />
-            <Text className="text-white/70 text-[15px] text-center font-sans leading-[22px]">
+
+            <Text className="text-white/70 text-[15px] text-center font-sans leading-[22px] px-4">
               {t('splash.tagline')}
             </Text>
           </Animated.View>
@@ -109,9 +168,9 @@ export default function SplashScreen() {
           <Animated.View style={{ opacity: btnOpacity }}>
             <Pressable
               onPress={handleStart}
-              className="bg-brand-terracotta rounded-2xl py-[18px] items-center active:opacity-80"
+              className="bg-brand-gold rounded-2xl py-[18px] items-center active:opacity-80"
             >
-              <Text className="text-white text-[17px] font-sans-bold">
+              <Text className="text-brand-green text-[17px] font-sans-bold">
                 {t('splash.start')}
               </Text>
             </Pressable>

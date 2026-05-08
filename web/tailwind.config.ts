@@ -10,7 +10,9 @@ const config: Config = {
       colors: {
         brand: {
           green: '#003322',
+          'green-dark': '#062419',
           gold: '#C5A059',
+          'gold-light': '#D4B06A',
           terracotta: '#B35C37',
           petrol: '#004B5E',
           'green-light': '#004d33',
@@ -18,12 +20,14 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: ['Georgia', 'Times New Roman', 'serif'],
+        serif: ['Playfair Display', 'Georgia', 'Times New Roman', 'serif'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         gourmet: '0 4px 24px rgba(0, 0, 0, 0.12)',
-        'gourmet-lg': '0 8px 40px rgba(0, 0, 0, 0.16)',
+        'gourmet-lg': '0 8px 40px rgba(0, 0, 0, 0.18)',
+        'gold-glow': '0 0 24px rgba(197, 160, 89, 0.35)',
+        'card': '0 2px 40px rgba(0, 0, 0, 0.4)',
       },
     },
   },
