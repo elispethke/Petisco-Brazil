@@ -1,0 +1,98 @@
+{
+  "navigation": {
+    "menu": ["Savory", "Cakes", "Desserts", "Brazil"],
+    "admin": "Admin"
+  },
+
+  "hero": {
+    "badge": "Own delivery · Homemade flavor",
+    "description": "Brazilian handmade snacks, cakes and desserts with premium ingredients.",
+    "orderButton": "Order in the App",
+    "menuButton": "See menu"
+  },
+
+  "sections": {
+    "salgados": "Savory",
+    "bolos": "Cakes",
+    "doces": "Desserts",
+    "brasil": "Brazil",
+    "confeitaria": "Bakery",
+    "brigaderia": "Desserts",
+    "lifestyle": "Lifestyle",
+    "artesanal": "handmade",
+    "gourmet": "gourmet",
+    "combos": "Combos",
+    "brasilEmCadaMordida": "Brazil in every bite"
+  },
+
+  "cta": {
+    "titleTop": "Your next",
+    "titleBottom": "order",
+    "description": "Download the app and receive at home.",
+    "button": "Order in the App"
+  },
+
+  "privacy": {
+    "text": "This website is informational only.",
+    "button": "Got it"
+  },
+
+  "modal": {
+    "title": "Order in the App",
+    "description": "Download the Petisco Brasil app.",
+    "ios": "App Store — iOS",
+    "android": "Google Play — Android",
+    "soon": "Coming soon"
+  },
+
+  "footer": {
+    "copyright": "© 2026 — Flavor crossing the Atlantic"
+  },
+
+  "products": {
+    "salgados": [
+      "Coxinha",
+      "Sirole de Carne",
+      "Sirole de Camarão",
+      "Empadinha de Frango"
+    ],
+
+    "bolos": [
+      "Brigadeiro",
+      "Red Velvet",
+      "Pistachio",
+      "Prestige"
+    ],
+
+    "docesCombos": [
+      {
+        "name": "Brigadeiro",
+        "desc": "Traditional creamy chocolate truffle.",
+        "type": "DESSERT"
+      },
+
+      {
+        "name": "Family Combo",
+        "desc": "Savory snacks, desserts and cake.",
+        "type": "COMBO"
+      }
+    ],
+
+    "cidades": [
+      {
+        "name": "Rio de Janeiro",
+        "img": "/images/rio.jpg"
+      },
+
+      {
+        "name": "Salvador",
+        "img": "/images/salvador.jpg"
+      },
+
+      {
+        "name": "Lençóis Maranhenses",
+        "img": "/images/lencois.jpg"
+      }
+    ]
+  }
+}

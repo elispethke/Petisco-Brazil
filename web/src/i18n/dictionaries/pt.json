@@ -1,0 +1,98 @@
+{
+  "navigation": {
+    "menu": ["Salgados", "Bolos", "Doces", "Brasil"],
+    "admin": "Admin"
+  },
+
+  "hero": {
+    "badge": "Delivery próprio · Sabor de casa",
+    "description": "Salgados, bolos e doces artesanais do Brasil — preparados com receitas de família e ingredientes premium.",
+    "orderButton": "Peça no App",
+    "menuButton": "Ver cardápio"
+  },
+
+  "sections": {
+    "salgados": "Salgados",
+    "bolos": "Bolos",
+    "doces": "Doces",
+    "brasil": "Brasil",
+    "confeitaria": "Confeitaria",
+    "brigaderia": "Brigaderia",
+    "lifestyle": "Lifestyle",
+    "artesanal": "artesanais",
+    "gourmet": "gourmet",
+    "combos": "Combos",
+    "brasilEmCadaMordida": "O Brasil em cada mordida"
+  },
+
+  "cta": {
+    "titleTop": "Sua próxima",
+    "titleBottom": "encomenda",
+    "description": "Baixe o app, monte seu combo e receba em casa.",
+    "button": "Peça no App"
+  },
+
+  "privacy": {
+    "text": "Este site é informativo. Não coletamos dados pessoais.",
+    "button": "Entendido"
+  },
+
+  "modal": {
+    "title": "Peça no App",
+    "description": "Baixe o aplicativo Petisco Brasil e receba em casa.",
+    "ios": "App Store — iOS",
+    "android": "Google Play — Android",
+    "soon": "Em breve disponível"
+  },
+
+  "footer": {
+    "copyright": "© 2026 — Sabor que atravessa o Atlântico"
+  },
+
+  "products": {
+    "salgados": [
+      "Coxinha",
+      "Sirole de Carne",
+      "Sirole de Camarão",
+      "Empadinha de Frango"
+    ],
+
+    "bolos": [
+      "Brigadeiro",
+      "Red Velvet",
+      "Pistache",
+      "Prestígio"
+    ],
+
+    "docesCombos": [
+      {
+        "name": "Brigadeiro",
+        "desc": "Tradicional, cremoso, granulado belga.",
+        "type": "DOCE"
+      },
+
+      {
+        "name": "Combo Família",
+        "desc": "Salgados, doces e bolo no kit.",
+        "type": "COMBO"
+      }
+    ],
+
+    "cidades": [
+      {
+        "name": "Rio de Janeiro",
+        "img": "/images/rio.jpg"
+      },
+
+      {
+        "name": "Salvador",
+        "img": "/images/salvador.jpg"
+      },
+
+      {
+        "name": "Lençóis Maranhenses",
+        "img": "/images/lencois.jpg"
+      }
+    ]
+  }
+}

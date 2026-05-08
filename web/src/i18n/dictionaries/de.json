@@ -1,0 +1,98 @@
+{
+  "navigation": {
+    "menu": ["Snacks", "Kuchen", "Süßigkeiten", "Brasilien"],
+    "admin": "Admin"
+  },
+
+  "hero": {
+    "badge": "Eigene Lieferung · Geschmack wie zuhause",
+    "description": "Brasilianische handgemachte Snacks, Kuchen und Süßigkeiten.",
+    "orderButton": "In der App bestellen",
+    "menuButton": "Menü ansehen"
+  },
+
+  "sections": {
+    "salgados": "Snacks",
+    "bolos": "Kuchen",
+    "doces": "Süßigkeiten",
+    "brasil": "Brasilien",
+    "confeitaria": "Konditorei",
+    "brigaderia": "Desserts",
+    "lifestyle": "Lifestyle",
+    "artesanal": "handgemacht",
+    "gourmet": "gourmet",
+    "combos": "Kombos",
+    "brasilEmCadaMordida": "Brasilien in jedem Bissen"
+  },
+
+  "cta": {
+    "titleTop": "Deine nächste",
+    "titleBottom": "Bestellung",
+    "description": "Lade die App herunter und bestelle nach Hause.",
+    "button": "In der App bestellen"
+  },
+
+  "privacy": {
+    "text": "Diese Website dient nur zu Informationszwecken.",
+    "button": "Verstanden"
+  },
+
+  "modal": {
+    "title": "In der App bestellen",
+    "description": "Lade die Petisco Brasil App herunter.",
+    "ios": "App Store — iOS",
+    "android": "Google Play — Android",
+    "soon": "Bald verfügbar"
+  },
+
+  "footer": {
+    "copyright": "© 2026 — Geschmack über den Atlantik"
+  },
+
+  "products": {
+    "salgados": [
+      "Coxinha",
+      "Sirole de Carne",
+      "Sirole de Camarão",
+      "Empadinha de Frango"
+    ],
+
+    "bolos": [
+      "Brigadeiro",
+      "Red Velvet",
+      "Pistazie",
+      "Prestige"
+    ],
+
+    "docesCombos": [
+      {
+        "name": "Brigadeiro",
+        "desc": "Traditionelle cremige Schokoladentrüffel.",
+        "type": "DESSERT"
+      },
+
+      {
+        "name": "Familien Combo",
+        "desc": "Snacks, Süßigkeiten und Kuchen.",
+        "type": "COMBO"
+      }
+    ],
+
+    "cidades": [
+      {
+        "name": "Rio de Janeiro",
+        "img": "/images/rio.jpg"
+      },
+
+      {
+        "name": "Salvador",
+        "img": "/images/salvador.jpg"
+      },
+
+      {
+        "name": "Lençóis Maranhenses",
+        "img": "/images/lencois.jpg"
+      }
+    ]
+  }
+}
